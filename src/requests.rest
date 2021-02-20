@@ -1,0 +1,50 @@
+POST http://localhost:5000/getRestaurants
+Content-Type: application/json
+
+{
+    "address":"Owocowa, Szczecin",
+    "bookTime": {
+        "minute": 30,
+        "hour": 20,
+        "year": 2020,
+        "day": 12,
+        "month": 11,
+        "people": 5
+    }
+}
+
+###
+
+POST http://localhost:5000/reservation/delete
+Content-Type: application/json
+
+{
+    "name":"Ceglana",
+    "bookTime": {
+        "minute": 0,
+        "hour": 10,
+        "year": 2020,
+        "day": 8,
+        "month": 11,
+        "people": 5,
+        "name":"Dawid Niegrebecki"
+    } 
+}
+###
+
+POST http://localhost:5000/findNextAvailable
+Content-Type: application/json
+
+{"name":"Ceglana",
+"bookTime": {
+        "minute": 0,
+        "hour": 21,
+        "year": 2020,
+        "day": 13,
+        "month": 11,
+        "people": 5,
+        "name":"Dawid Niegrebecki"
+    } }
+
+
+###

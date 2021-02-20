@@ -1,0 +1,11 @@
+{
+    "address": "Mieszka 1, Szczecin",
+    "bookTime": {
+        "minute": 30,
+        "hour": 12,
+        "year": 2020,
+        "day": 12,
+        "month": 11,
+        "people": 5
+    }
+}
