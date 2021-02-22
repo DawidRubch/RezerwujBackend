@@ -81,15 +81,15 @@ export class RestaurantPubRepository {
     return alternativeBookingHoursArray;
   }
   //To do
-  async findNextAvialable(bookTime: BookTime, restaurantName: string) {
-    await this.restaurantOrPubDb
-      .getRestaurantOrPubByNameFromDb(restaurantName)
-      .then((restaurantOrPub) => {
-        let bookTimeSortedArray: BookTime[] = sortBookTimes(
-          restaurantOrPub.bookTimeArray
-        );
-      });
-  }
+  // async findNextAvialable(bookTime: BookTime, restaurantName: string) {
+  //   await this.restaurantOrPubDb
+  //.getRestaurantOrPubByNameFromDb(restaurantName)
+  //      .then((restaurantOrPub) => {
+  //       let bookTimeSortedArray: BookTime[] = sortBookTimes(
+  //         restaurantOrPub.bookTimeArray
+  //       );
+  //});
+  // }
 }
 
 //Function used inside generateAlternativeBookingHours

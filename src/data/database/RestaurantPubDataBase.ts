@@ -1,9 +1,8 @@
 import db from "../../core/DbConfig/firebase";
-const admin = require("firebase-admin");
-import { BookTime, RestaurantOrPub } from "../models/";
+import admin from "firebase-admin";
+import { BookTime, RestaurantOrPub } from "../models";
 
 import { mappingDataFromDb } from "../../core/helpers/mappingDataFromDb";
-import { stringify } from "uuid";
 
 /**
  Class with diffrent functions to map the data from the database.
@@ -14,10 +13,10 @@ export class RestaurantPubDb {
 
   async getAllDocuments(): Promise<RestaurantOrPub[]> {
     let restaurantOrPubArr: any[] = [];
-    const snapshot = await db.collection(this.collectionName).get();
+    const { docs } = await db.collection(this.collectionName).get();
 
-    for (const doc in snapshot.docs) {
-      mappingDataFromDb(snapshot.docs[doc].data(), restaurantOrPubArr);
+    for (const doc in docs) {
+      mappingDataFromDb(docs[doc].data(), restaurantOrPubArr);
     }
     return Promise.resolve(restaurantOrPubArr);
   }
@@ -70,7 +69,7 @@ export class RestaurantPubDb {
 
   async manageReservationsFromDb(
     bookTime: BookTime,
-    arrayAddOrRemove: any,
+    arrayAddOrRemove: (...elements: any) => FirebaseFirestore.FieldValue,
     restaurantName: string,
     res: any,
     email?: string,
@@ -81,26 +80,27 @@ export class RestaurantPubDb {
     if (!bookTime.minute) {
       bookTime.minute = 0;
     }
-    const document = await db
-      .collection(this.collectionName)
-      .doc(restaurantName);
-    await document.get().then((doc: any) => {
+    const document = db.collection(this.collectionName).doc(restaurantName);
+    await document.get().then((doc) => {
       if (doc.exists) {
-        document.update({
-          bookTimeArray: arrayAddOrRemove({
-            day: bookTime.day,
-            hour: bookTime.hour,
-            minute: bookTime.minute,
-            month: bookTime.month,
-            people: bookTime.people,
-            year: bookTime.year,
-            name: bookTime.name,
-            email,
-            personName,
-            surName,
-            number,
-          }),
+        let returnValue = arrayAddOrRemove({
+          day: bookTime.day,
+          hour: bookTime.hour,
+          minute: bookTime.minute,
+          month: bookTime.month,
+          people: bookTime.people,
+          year: bookTime.year,
+          name: bookTime.name,
+          email,
+          personName,
+          surName,
+          number,
         });
+        console.log(1);
+        document.update({
+          bookTimeArray: returnValue,
+        });
+
         res.send("Success");
       } else {
         res.send("Restauracja nie istnieje");

@@ -1,4 +1,5 @@
-import { BookTime, RestaurantOrPub } from "../data/models";
+import { RestaurantPubDb } from "../data/database/RestaurantPubDataBase";
+import { BookTime } from "../data/models";
 import { RestaurantPubRepository } from "../domain/repository/RestaurantPubRepository";
 
 const express = require("express");
@@ -7,14 +8,19 @@ const router = express.Router();
 interface GetRoPAlternativeBookingHoursReq {
   body: {
     bookTime: BookTime;
-    roP: RestaurantOrPub;
+    name: string;
   };
 }
 
 router.post(
   "/",
-  ({ body: { bookTime, roP } }: GetRoPAlternativeBookingHoursReq, res: any) => {
+  async (
+    { body: { bookTime, name } }: GetRoPAlternativeBookingHoursReq,
+    res: any
+  ) => {
     let restaurantPubRepository = new RestaurantPubRepository();
+    let restaurantPubDb = new RestaurantPubDb();
+    let roP = await restaurantPubDb.getRestaurantOrPubByNameFromDb(name);
     const alternativeBookingHours = restaurantPubRepository.generateAlternativeBookingHours(
       bookTime,
       roP
@@ -23,3 +29,5 @@ router.post(
     res.send(alternativeBookingHours);
   }
 );
+
+module.exports = router;

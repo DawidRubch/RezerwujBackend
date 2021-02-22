@@ -18,6 +18,9 @@ export const APIURLS = {
   },
   getRestaurants: "/getRestaurants",
   findNextAvailable: "/findNextAvailable",
+  getRoPAlternativeBookingHours: "/getRoPAlternativeBookingHours",
+  getRestaurantInfoDescriptionPage: "/getRoPInfoDescriptionPage",
+  getRestaurantInfoConfirmPage: "/getRoPInfoConfirmPage",
 };
 
 //People to choose from in the main page

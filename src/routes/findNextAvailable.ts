@@ -18,13 +18,13 @@ router.post("/", async (req: ReservationFindNextAvaliableJson, res: any) => {
     reqBookTime.year,
     reqBookTime.people
   );
-  await restaurantPubRep
-    .findNextAvialable(bookTime, name)
-    .then()
-    .catch((err) => {
-      console.log(err);
-    });
-  res.send("Success");
+  await restaurantPubRep;
+  // .findNextAvialable(bookTime, name)
+  //.then()
+  //   .catch((err) => {
+  //console.log(err);
+  //   });
+  //  res.send("Success");
 });
 
 module.exports = router;

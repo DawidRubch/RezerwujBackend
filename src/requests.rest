@@ -15,7 +15,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:5000/reservation/delete
+POST http://localhost:5000/reservation/save
 Content-Type: application/json
 
 {

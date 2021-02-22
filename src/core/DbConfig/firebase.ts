@@ -1,4 +1,4 @@
-var admin = require("firebase-admin");
+import admin from "firebase-admin";
 
 var serviceAccount = require("./serviceAccountKey.json");
 
@@ -8,5 +8,6 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
+db.settings({ ignoreUndefinedProperties: true });
 
 export default db;
