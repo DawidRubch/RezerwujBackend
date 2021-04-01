@@ -21,6 +21,12 @@ router.post(
     let restaurantPubRepository = new RestaurantPubRepository();
     let restaurantPubDb = new RestaurantPubDb();
     let roP = await restaurantPubDb.getRestaurantOrPubByNameFromDb(name);
+
+    if (typeof roP === "number") {
+      res.sendStatus(404);
+      return;
+    }
+
     const alternativeBookingHours = restaurantPubRepository.generateAlternativeBookingHours(
       bookTime,
       roP

@@ -1,6 +1,5 @@
 import express from "express";
 
-
 import { RestaurantPubDb } from "../data/database/RestaurantPubDataBase";
 import { BookTime } from "../data/models";
 import { RestaurantPubRepository } from "../domain/repository/RestaurantPubRepository";
@@ -20,6 +19,9 @@ router.post("/", async ({ body }: any, res: any) => {
   );
 
   let RoP = await restaurantOrPubDb.getRestaurantOrPubByNameFromDb(body.name);
+  if (typeof RoP === "number") {
+    return;
+  }
   let alternativeBookingHours = restaurantPubRepository.generateAlternativeBookingHours(
     bookTimeFromDb,
     RoP

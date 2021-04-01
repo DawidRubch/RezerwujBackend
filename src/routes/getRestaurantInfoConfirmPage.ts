@@ -16,6 +16,12 @@ router.post("/", async ({ body }, res: any) => {
     body.bookTime.year,
     body.bookTime.people
   );
+
+  if (typeof RoP === "number") {
+    res.sendStatus(404);
+    return;
+  }
+
   let isFree = isBookTimeFree(bookTimeFromDb, RoP.bookTimeArray, RoP);
   let { image } = RoP;
   res.send({ image, isFree });

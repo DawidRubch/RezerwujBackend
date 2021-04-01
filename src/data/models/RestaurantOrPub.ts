@@ -15,7 +15,7 @@ export class RestaurantOrPub {
   image: string;
   descriptionPageImg: string;
   weekArray: Array<DayOfTheWeekOpenHours | null>;
-  alternativeBookingHours: Array<BookTime | null>;
+  alternativeBookingHours: Array<BookTime | null> | 0;
 
   constructor(
     name: string,
@@ -54,71 +54,91 @@ export class RestaurantOrPub {
   }
 }
 //Napisać testy pod t
-export function fromJson(restaurantOrPub: RestaurantOrPub): RestaurantOrPub {
-  let location: ROPLocation = new ROPLocation(
-    restaurantOrPub.location.lat,
-    restaurantOrPub.location.long
+export function fromJson({
+  location,
+  weekArray,
+  bookTimeArray,
+  name,
+  type,
+  tags,
+  shortDescription,
+  chairs,
+  menuLink,
+  image,
+  descriptionPageImg,
+  alternativeBookingHours,
+  distance,
+}: RestaurantOrPub): RestaurantOrPub {
+  let locationToReturn: ROPLocation = new ROPLocation(
+    location.lat,
+    location.long
   );
-  let weekArray: Array<DayOfTheWeekOpenHours | null> = restaurantOrPub.weekArray.map(
+  let weekArrayToReturn: Array<DayOfTheWeekOpenHours | null> = weekArray.map(
     mapWeekDay
   );
-  let bookTimeArray: BookTime[] = restaurantOrPub.bookTimeArray.map(
-    mapBookTime
-  );
+  let bookTimeArrayToReturn: BookTime[] = bookTimeArray.map(mapBookTime);
   let restaurantOrPubEntity = new RestaurantOrPub(
-    restaurantOrPub.name,
-    restaurantOrPub.type,
-    restaurantOrPub.tags,
-    restaurantOrPub.shortDescription,
-    location,
-    restaurantOrPub.chairs,
-    restaurantOrPub.menuLink,
-    bookTimeArray,
-    restaurantOrPub.image,
-    restaurantOrPub.descriptionPageImg,
-    weekArray
-  );
-  let alternativeBookingHours = restaurantOrPub.alternativeBookingHours.map(
-    mapAlternativeBookingHours
+    name,
+    type,
+    tags,
+    shortDescription,
+    locationToReturn,
+    chairs,
+    menuLink,
+    bookTimeArrayToReturn,
+    image,
+    descriptionPageImg,
+    weekArrayToReturn
   );
 
-  restaurantOrPubEntity.distance = restaurantOrPub.distance;
-  restaurantOrPubEntity.alternativeBookingHours = alternativeBookingHours;
+  let alternativeBookingHoursToReturn =
+    alternativeBookingHours === 0
+      ? alternativeBookingHours
+      : alternativeBookingHours.map(mapAlternativeBookingHours);
+
+  restaurantOrPubEntity.distance = distance;
+
+  restaurantOrPubEntity.alternativeBookingHours = alternativeBookingHoursToReturn;
+
   return restaurantOrPubEntity;
 }
-function mapBookTime(bookTime: BookTime) {
-  let restaurantBookTime = new BookTime(
-    bookTime.minute,
-    bookTime.hour,
-    bookTime.day,
-    bookTime.month,
-    bookTime.year,
-    bookTime.people
-  );
-  restaurantBookTime.name = bookTime.name;
+function mapBookTime({
+  minute,
+  hour,
+  day,
+  month,
+  year,
+  people,
+  name,
+}: BookTime) {
+  let restaurantBookTime = new BookTime(minute, hour, day, month, year, people);
+  restaurantBookTime.name = name;
   return restaurantBookTime;
 }
 
 function mapWeekDay(weekDay: DayOfTheWeekOpenHours | null) {
-  return weekDay === null
-    ? null
-    : new DayOfTheWeekOpenHours(
-        weekDay.openHour,
-        weekDay.openMinute,
-        weekDay.closingHour,
-        weekDay.closingMinute
-      );
+  if (weekDay === null) {
+    return null;
+  }
+
+  let { openHour, openMinute, closingHour, closingMinute } = weekDay;
+
+  return new DayOfTheWeekOpenHours(
+    openHour,
+    openMinute,
+    closingHour,
+    closingMinute
+  );
 }
 
 function mapAlternativeBookingHours(bookTimeOrNull: BookTime | null) {
-  return bookTimeOrNull === null
-    ? null
-    : new BookTime(
-        bookTimeOrNull.minute,
-        bookTimeOrNull.hour,
-        bookTimeOrNull.day,
-        bookTimeOrNull.month,
-        bookTimeOrNull.year,
-        bookTimeOrNull.people
-      );
+  
+  if (bookTimeOrNull === null) {
+    return null;
+  }
+
+  //Descructing bookTime object
+  const { minute, hour, day, month, year, people } = bookTimeOrNull;
+
+  return new BookTime(minute, hour, day, month, year, people);
 }

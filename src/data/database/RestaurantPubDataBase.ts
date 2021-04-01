@@ -24,7 +24,10 @@ export class RestaurantPubDb {
   async getRestaurantOrPubByNameFromDb(name: string) {
     let restaurantOrPubArr: any[] = [];
     const snapshot = await db.collection(this.collectionName).doc(name).get();
+
     const snapshotData = snapshot.data();
+    if (!snapshotData) return 0;
+
     const dataInArray: RestaurantOrPub[] = mappingDataFromDb(
       snapshotData,
       restaurantOrPubArr

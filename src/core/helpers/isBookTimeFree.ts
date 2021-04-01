@@ -1,5 +1,6 @@
 import { BookTime, RestaurantOrPub } from "../../data/models/";
 import { RESERVATIONTIMECHECK } from "../../core/ImportantVariables/variables";
+const _ = require("lodash");
 /**
  Function checks if a certain bookTime is free, 1 hour ahead.
  */
@@ -36,7 +37,6 @@ export function isBookTimeFree(
   return true;
 }
 
-const _ = require("lodash");
 //Compares two booktimes and ignores the amount of people
 function compareTwoBookTimes(
   bookTime1: BookTime,
@@ -66,7 +66,7 @@ function bookTimeWithoutPeople(
   day: number,
   month: number
 ) {
-  return { minutes: minute, hour: hour, year: year, day: day, month: month };
+  return { minutes: minute, hour, year, day, month };
 }
 function howManyChairsTaken(
   bookTime: BookTime,

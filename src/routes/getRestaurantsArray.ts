@@ -75,9 +75,7 @@ router.post(
           console.log(err);
         }
       })
-      .catch((e: Error) => {
-        console.log("Coś z api google/getRestaurantsArray.ts");
-      });
+      .catch(() => console.log("Coś z api google/getRestaurantsArray.ts"));
   }
 );
 
