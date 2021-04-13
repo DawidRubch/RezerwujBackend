@@ -99,7 +99,7 @@ export class RestaurantPubDb {
           surName,
           number,
         });
-        console.log(1);
+
         document.update({
           bookTimeArray: returnValue,
         });

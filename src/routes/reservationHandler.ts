@@ -27,6 +27,13 @@ router.post(APIURLS.reservation.save, async (req: any, res: any) => {
 
     bookTime.name = bookTimeReq.name;
 
+    const checkIfDateIsBeforeCurrentDate = isReservationFromPast(bookTime);
+
+    if (checkIfDateIsBeforeCurrentDate) {
+      res.sendStatus(400);
+      return;
+    }
+
     //  smsSendRepository.sendSmsToRestaurantManager(bookTime);
 
     await manageReservation(
@@ -74,3 +81,18 @@ async function manageReservation(arrayAddOrRemove: Promise<void>) {
 }
 
 module.exports = router;
+
+//Checks if reservation is created before
+const isReservationFromPast = (bookTime: BookTime) => {
+  const currentDate = new Date();
+
+  const dateFromBookTime = new Date();
+
+  dateFromBookTime.setDate(bookTime.day);
+  dateFromBookTime.setMonth(bookTime.month);
+  dateFromBookTime.setMinutes(bookTime.minute);
+  dateFromBookTime.setHours(bookTime.hour);
+  dateFromBookTime.setFullYear(bookTime.year);
+
+  return currentDate > dateFromBookTime;
+};

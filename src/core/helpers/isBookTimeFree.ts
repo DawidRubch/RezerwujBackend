@@ -74,9 +74,9 @@ function howManyChairsTaken(
 ) {
   let chairsCount: number = 0;
 
-  for (const i in bookTimeArray) {
-    if (compareTwoBookTimes(bookTimeArray[i], bookTime)) {
-      chairsCount += bookTimeArray[i].people;
+  for (const bT of bookTimeArray) {
+    if (compareTwoBookTimes(bT, bookTime)) {
+      chairsCount += bT.people;
     }
   }
   return chairsCount;

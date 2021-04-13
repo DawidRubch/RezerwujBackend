@@ -18,9 +18,13 @@ router.post(
     { body: { bookTime, name } }: GetRoPAlternativeBookingHoursReq,
     res: any
   ) => {
-    let restaurantPubRepository = new RestaurantPubRepository();
-    let restaurantPubDb = new RestaurantPubDb();
-    let roP = await restaurantPubDb.getRestaurantOrPubByNameFromDb(name);
+
+    const restaurantPubRepository = new RestaurantPubRepository();
+    
+    const restaurantPubDb = new RestaurantPubDb();
+    
+    //Getting restaurant or pub from array
+    const roP = await restaurantPubDb.getRestaurantOrPubByNameFromDb(name);
 
     if (typeof roP === "number") {
       res.sendStatus(404);

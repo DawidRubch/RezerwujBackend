@@ -11,7 +11,6 @@ import {
   checkIfAddressIsInRange,
 } from "../../core/helpers/checkIfAddressIsInRange";
 import { sortByClosestDistance } from "../../core/SortingFunctions/sortByClosestDistance";
-import { sortBookTimes } from "../../core/SortingFunctions/sortBookTimes";
 export class RestaurantPubRepository {
   restaurantOrPubDb = new RestaurantPubDb();
   /**
@@ -29,19 +28,26 @@ export class RestaurantPubRepository {
 
     //Looping over places
     for (const restaurantOrPub of RestaurantOrPubsArray) {
-      let { distance, location, alternativeBookingHours } = restaurantOrPub;
-      if (checkIfAddressIsInRange(searchingAddress, location)) {
-        distance = calculateDistance(searchingAddress, location);
-        //Returns alternative booking array for BookTime
+      //Desctructing variables from restaurantOrPub entity
+      let { distance, location } = restaurantOrPub;
 
+      //Checks if restaurantis in range
+      const isPlaceInRange = checkIfAddressIsInRange(
+        searchingAddress,
+        location
+      );
+
+      if (isPlaceInRange) {
+        //Calculates the distance beetween adress and location
+        distance = calculateDistance(searchingAddress, location);
+
+        //Returns alternative booking array for BookTime
         const alternativeBookingHoursOr0 = restaurantPubRepository.generateAlternativeBookingHours(
           bookTime,
           restaurantOrPub
         );
-        if (alternativeBookingHoursOr0 === 0) {
-          alternativeBookingHours = 0;
-        }
-        alternativeBookingHours = alternativeBookingHoursOr0;
+
+        restaurantOrPub.alternativeBookingHours = alternativeBookingHoursOr0;
         placesArr.push(restaurantOrPub);
       }
     }
@@ -57,8 +63,8 @@ export class RestaurantPubRepository {
   generateAlternativeBookingHours(
     bookTime: BookTime,
     restaurantOrPub: RestaurantOrPub
-  ): Array<null | BookTime> | 0 {
-    let alternativeBookingHoursArray: Array<null | BookTime> = [];
+  ): Array<null | BookTime | 0> | 0 {
+    let alternativeBookingHoursArray: Array<null | BookTime | 0> = [];
     let restaurantBookTime: BookTime = new BookTime(
       bookTime.minute,
       bookTime.hour,
@@ -92,29 +98,21 @@ export class RestaurantPubRepository {
       );
     }
 
-    //Loops over the final booking hours array to check if it only has nulls
-    //If it does just return 1,
-    for (let bookTimeOrNull of alternativeBookingHoursArray) {
-      let isArrayOnlyConsintentOfNulls = false;
-      if (bookTimeOrNull !== null) {
-        isArrayOnlyConsintentOfNulls = true;
-        break;
-      }
-      return 0;
+    //Checks if there is something in array that isnt null
+    const isSomethingThatIsNotNullInArray = alternativeBookingHoursArray.some(
+      (bTOrNull) => bTOrNull !== null
+    );
+
+    const isSomethingThatIsNotZeroInArray = alternativeBookingHoursArray.some(
+      (bTOrNullOrZeros) => bTOrNullOrZeros !== 0
+    );
+
+    if (!isSomethingThatIsNotZeroInArray) {
+      return [];
     }
 
-    return alternativeBookingHoursArray;
+    return isSomethingThatIsNotNullInArray ? alternativeBookingHoursArray : 0;
   }
-  //To do
-  // async findNextAvialable(bookTime: BookTime, restaurantName: string) {
-  //   await this.restaurantOrPubDb
-  //.getRestaurantOrPubByNameFromDb(restaurantName)
-  //      .then((restaurantOrPub) => {
-  //       let bookTimeSortedArray: BookTime[] = sortBookTimes(
-  //         restaurantOrPub.bookTimeArray
-  //       );
-  //});
-  // }
 }
 
 //Function used inside generateAlternativeBookingHours
@@ -126,18 +124,22 @@ function checkIfBookTimeViable(
   { closingHour, openHour, closingMinute }: DayOfTheWeekOpenHours,
   restaurantOrPub: RestaurantOrPub
 ) {
-  let { minute, hour, day, month, year, people } = restaurantBookTime;
-
   //If minutes are equal to 60 changes to next hour
-  if (minute === 60) {
-    hour += 1;
-    minute = 0;
+  if (restaurantBookTime.minute === 60) {
+    restaurantBookTime.hour += 1;
+    restaurantBookTime.minute = 0;
   }
   //Checks if the place is closed
-  if (hour > closingHour || hour < openHour) {
+  if (
+    restaurantBookTime.hour > closingHour ||
+    restaurantBookTime.hour < openHour
+  ) {
     alternativeBookingHoursArray.push(0);
   } //Also checks for if the place is closed but in the same hour
-  else if (hour === closingHour && minute > closingMinute) {
+  else if (
+    restaurantBookTime.hour === closingHour &&
+    restaurantBookTime.minute > closingMinute
+  ) {
     alternativeBookingHoursArray.push(0);
   }
 
@@ -152,8 +154,15 @@ function checkIfBookTimeViable(
     alternativeBookingHoursArray.push(null);
   } else {
     alternativeBookingHoursArray.push(
-      new BookTime(minute, hour, day, month, year, people)
+      new BookTime(
+        restaurantBookTime.minute,
+        restaurantBookTime.hour,
+        restaurantBookTime.day,
+        restaurantBookTime.month,
+        restaurantBookTime.year,
+        restaurantBookTime.people
+      )
     );
   }
-  minute += 30;
+  restaurantBookTime.minute += 30;
 }

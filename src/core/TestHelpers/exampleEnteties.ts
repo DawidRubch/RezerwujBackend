@@ -41,6 +41,33 @@ export let tBookTimeArray = [
   //16:00 26 list 2020 6 osob
   new BookTime(0, 16, 26, 11, 2020, 6),
 ];
+
+export const tFullBookedArray = [
+  //18:30 21 October 2020 15 people
+  new BookTime(30, 18, 21, 10, 2020, 15),
+  //18:30 21 October 2020 16 people
+  new BookTime(30, 18, 21, 10, 2020, 16),
+  //19:00 21 October 2020 15 people
+  new BookTime(0, 19, 21, 10, 2020, 15),
+  //19:00 21 October 2020 16 people
+  new BookTime(0, 19, 21, 10, 2020, 16),
+  //19:30 21 October 2020 15 people
+  new BookTime(30, 19, 21, 10, 2020, 15),
+  //19:30 21 October 2020 16 people
+  new BookTime(30, 19, 21, 10, 2020, 16),
+  //20:00 21 October 2020 15 people
+  new BookTime(0, 20, 21, 10, 2020, 15),
+  //20:00 21 October 2020 16 people
+  new BookTime(0, 20, 21, 10, 2020, 16),
+  //20:30 21 October 2020 15 people
+  new BookTime(30, 20, 21, 10, 2020, 15),
+  //20:30 21 October 2020 16 people
+  new BookTime(30, 20, 21, 10, 2020, 16),
+  //21:00 21 October 2020 15 people
+  new BookTime(0, 21, 21, 10, 2020, 15),
+  //21:00 21 October 2020 16 people
+  new BookTime(0, 21, 21, 10, 2020, 16),
+];
 export let tRestaurantCeglanaSzczecin = new RestaurantOrPub(
   "Ceglana",
   "włoska",
@@ -51,6 +78,7 @@ export let tRestaurantCeglanaSzczecin = new RestaurantOrPub(
   "youtube.com",
   tBookTimeArray,
   "",
+  "descriptionPageImg",
   weekArray
 );
 
@@ -71,7 +99,7 @@ export let tAlternativeBookTimeArray = [
   new BookTime(0, 13, 25, 11, 2020, 5),
 ];
 
-export let tAlternativeBookTimeArrayWith2Null = [
+export let tAlternativeBookTimeArrayWith2Zeros = [
   //20:30 25 lis 2020 5 osob
   new BookTime(30, 20, 25, 11, 2020, 5),
   //21:00 25 lis 2020 5 osob
@@ -80,8 +108,8 @@ export let tAlternativeBookTimeArrayWith2Null = [
   new BookTime(30, 21, 25, 11, 2020, 5),
   //22:00 25 lis 2020 5 osob
   new BookTime(0, 22, 25, 11, 2020, 5),
-  null,
-  null,
+  0,
+  0,
 ];
 export let tAlternativeBookTimeArrayWith2NullFront = [
   null,
@@ -170,6 +198,7 @@ let tRestaurantŁadogaSzczecin = new RestaurantOrPub(
   "",
   [],
   "",
+  "descriptionPageImg",
   []
 );
 let urządGminyPoliceSzczecin = new RestaurantOrPub(
@@ -182,6 +211,7 @@ let urządGminyPoliceSzczecin = new RestaurantOrPub(
   "",
   [],
   "",
+  "descriptionPageImg",
   []
 );
 export let restaurantOrPubArrayNotSorted: RestaurantOrPub[] = [

@@ -15,7 +15,7 @@ export class RestaurantOrPub {
   image: string;
   descriptionPageImg: string;
   weekArray: Array<DayOfTheWeekOpenHours | null>;
-  alternativeBookingHours: Array<BookTime | null> | 0;
+  alternativeBookingHours: Array<BookTime | null | 0> | 0;
 
   constructor(
     name: string,
@@ -131,10 +131,12 @@ function mapWeekDay(weekDay: DayOfTheWeekOpenHours | null) {
   );
 }
 
-function mapAlternativeBookingHours(bookTimeOrNull: BookTime | null) {
-  
+function mapAlternativeBookingHours(bookTimeOrNull: BookTime | null | 0) {
   if (bookTimeOrNull === null) {
     return null;
+  }
+  if (bookTimeOrNull === 0) {
+    return 0;
   }
 
   //Descructing bookTime object
