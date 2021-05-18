@@ -4,7 +4,7 @@ import {
   RestaurantOrPub,
   ROPLocation,
 } from "../../data/models/";
-import { RestaurantPubRepository } from "../../domain/repository/RestaurantPubRepository";
+import { RestaurantPubRepository } from "../../domain/repository/Places/RestaurantPubRepository";
 let weekArray = [
   null,
   new DayOfTheWeekOpenHours(10, 0, 22, 0),

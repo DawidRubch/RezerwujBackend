@@ -21,29 +21,5 @@ export const APIURLS = {
   getRoPAlternativeBookingHours: "/getRoPAlternativeBookingHours",
   getRestaurantInfoDescriptionPage: "/getRoPInfoDescriptionPage",
   getRestaurantInfoConfirmPage: "/getRoPInfoConfirmPage",
+  receiveSms: "/webhooks/inbound-sms",
 };
-
-//People to choose from in the main page
-export const PeopleArr = [
-  "osoba",
-  "osoby",
-  "osoby",
-  "osoby",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-  "osób",
-];

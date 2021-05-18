@@ -1,5 +1,5 @@
 import { BookTime } from "../data/models/";
-import { RestaurantPubRepository } from "../domain/repository/RestaurantPubRepository";
+import { RestaurantPubRepository } from "../domain/repository/Places/RestaurantPubRepository";
 import { ReservationFindNextAvaliableJson } from "../core/Interfaces";
 const express = require("express");
 
