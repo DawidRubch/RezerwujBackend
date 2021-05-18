@@ -1,6 +1,6 @@
 import { BookTime, RestaurantOrPub, ROPLocation } from "../data/models/";
 
-import { RestaurantPubRepository } from "../domain/repository/RestaurantPubRepository";
+import { RestaurantPubRepository } from "../domain/repository/Places/RestaurantPubRepository";
 import { GetRestaurantsJson } from "../core/Interfaces";
 import { DEFAULTADDRESS } from "../core/ImportantVariables/variables";
 const express = require("express");

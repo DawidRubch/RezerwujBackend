@@ -2,7 +2,7 @@ import express from "express";
 
 import { RestaurantPubDb } from "../data/database/RestaurantPubDataBase";
 import { BookTime } from "../data/models";
-import { RestaurantPubRepository } from "../domain/repository/RestaurantPubRepository";
+import { RestaurantPubRepository } from "../domain/repository/Places/RestaurantPubRepository";
 
 const router = express.Router();
 

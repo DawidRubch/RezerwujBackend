@@ -15,10 +15,10 @@ export class RestaurantPubDb {
     let restaurantOrPubArr: any[] = [];
     const { docs } = await db.collection(this.collectionName).get();
 
-    for (const doc in docs) {
-      mappingDataFromDb(docs[doc].data(), restaurantOrPubArr);
+    for (const doc of docs) {
+      mappingDataFromDb(doc.data(), restaurantOrPubArr);
     }
-    return Promise.resolve(restaurantOrPubArr);
+    return restaurantOrPubArr;
   }
 
   async getRestaurantOrPubByNameFromDb(name: string) {
@@ -31,10 +31,10 @@ export class RestaurantPubDb {
     const dataInArray: RestaurantOrPub[] = mappingDataFromDb(
       snapshotData,
       restaurantOrPubArr
-    );
+    );                        
     const data: RestaurantOrPub = dataInArray[0];
 
-    return Promise.resolve(data);
+    return data;
   }
   async saveReservationToDB(
     bookTime: BookTime,

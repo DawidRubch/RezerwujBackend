@@ -1,26 +1,27 @@
-import Nexmo, { MessageError } from "nexmo";
-import { BookTime } from "../../data/models";
+import { MessageError } from "nexmo";
+import { BookTime } from "../../../data/models";
+import SMS from "../../../data/superclasses/Sms";
 
-export default class SmsSendRepository {
-  nexmo = new Nexmo({
-    apiKey: "98af1aa8",
-    apiSecret: "jpJAcu9436OXPCkw",
-  });
-  opts = {
-    type: "unicode",
-  };
-
-  sendSmsToRestaurantManager({ people, hour, minute, day, month }: BookTime) {
+export default class SmsSendRepository extends SMS {
+  sendSmsToRestaurantManager(
+    { people, hour, minute, day, month }: BookTime,
+    RoPNumber: string
+  ) {
+ 
     try {
-      const from = "Rezerwacja";
-      const to = "48535480759";
+      //Contact Name
+      const from = "REZERWUJ";
+
+      //Text to send
       const text = `Stolik na ${hour}:${
         minute === 0 ? "00" : "30"
-      } dnia ${day}.${month < 10 ? "0" + month : month} Ilość osób: ${people}`;
+      } dnia ${day}.${
+        month < 10 ? "0" + month : month
+      } Ilość osób: ${people}. Proszę na tą wiadomość odpisać 1, jeśli rezerwacja jest możliwa lub 0 jeśli nie jest możliwa. `;
 
       this.nexmo.message.sendSms(
         from,
-        to,
+        RoPNumber,
         text,
         this.opts,
         (err: MessageError, responseData: any) => {

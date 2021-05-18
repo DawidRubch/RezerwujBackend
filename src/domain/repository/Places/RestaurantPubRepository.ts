@@ -3,14 +3,14 @@ import {
   RestaurantOrPub,
   DayOfTheWeekOpenHours,
   ROPLocation,
-} from "../../data/models/";
-import { isBookTimeFree } from "../../core/helpers/isBookTimeFree";
-import { RestaurantPubDb } from "../../data/database/RestaurantPubDataBase";
+} from "../../../data/models";
+import { isBookTimeFree } from "../../../core/helpers/isBookTimeFree";
+import { RestaurantPubDb } from "../../../data/database/RestaurantPubDataBase";
 import {
   calculateDistance,
   checkIfAddressIsInRange,
-} from "../../core/helpers/checkIfAddressIsInRange";
-import { sortByClosestDistance } from "../../core/SortingFunctions/sortByClosestDistance";
+} from "../../../core/helpers/checkIfAddressIsInRange";
+import { sortByClosestDistance } from "../../../core/SortingFunctions/sortByClosestDistance";
 export class RestaurantPubRepository {
   restaurantOrPubDb = new RestaurantPubDb();
   /**

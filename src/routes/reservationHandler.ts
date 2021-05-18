@@ -2,16 +2,23 @@ import { RestaurantPubDb } from "../data/database/RestaurantPubDataBase";
 import { BookTime } from "../data/models";
 import { APIURLS } from "../core/ImportantVariables/variables";
 import { ReservationFindNextAvaliableJson } from "../core/Interfaces";
-import SmsSendRepository from "../domain/repository/SmsSendRepository";
+import SmsSendRepository from "../domain/repository/Sms/SmsSendRepository";
 import express from "express";
 
 const router = express.Router();
 
-router.post(APIURLS.reservation.save, async (req: any, res: any) => {
+router.post(APIURLS.reservation.save, async (req, res) => {
   const smsSendRepository = new SmsSendRepository();
   console.log("Jestem tu");
 
+  //If there is no request, sends 400 error
+  if (!req) {
+    res.sendStatus(400);
+    return;
+  }
+
   const restaurantPubDb: RestaurantPubDb = new RestaurantPubDb();
+
   let reqBody: ReservationFindNextAvaliableJson = req.body;
   try {
     let bookTimeReq: any = reqBody.bookTime;
@@ -34,7 +41,7 @@ router.post(APIURLS.reservation.save, async (req: any, res: any) => {
       return;
     }
 
-    //  smsSendRepository.sendSmsToRestaurantManager(bookTime);
+    smsSendRepository.sendSmsToRestaurantManager(bookTime, "48535480759");
 
     await manageReservation(
       restaurantPubDb.saveReservationToDB(
