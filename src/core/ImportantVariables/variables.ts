@@ -22,4 +22,5 @@ export const APIURLS = {
   getRestaurantInfoDescriptionPage: "/getRoPInfoDescriptionPage",
   getRestaurantInfoConfirmPage: "/getRoPInfoConfirmPage",
   receiveSms: "/webhooks/inbound-sms",
+  sendReply: "/webhooks/send-reply",
 };

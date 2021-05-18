@@ -19,7 +19,7 @@ const findNextAvailable = require("../src/routes/findNextAvailable");
 const getRestaurantInfoDescriptionPage = require("../src/routes/getRestaurantInfoDescriptionPage");
 const getRestaurantInfoConfirmPage = require("../src/routes/getRestaurantInfoConfirmPage");
 const getRoPAlternativeBookingHours = require("../src/routes/getRoPAlternativeBookingHours");
-const receiveSms = require("../src/routes/receiveMessages");
+const receiveSms = require("../src/routes/webhooks/receiveMessages");
 app.use(APIURLS.getRestaurants, getRestaurantsRoute);
 app.use(APIURLS.reservation.reservation, reservationHandler);
 app.use(APIURLS.findNextAvailable, findNextAvailable);
