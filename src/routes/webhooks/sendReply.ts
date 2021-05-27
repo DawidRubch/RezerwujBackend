@@ -8,5 +8,7 @@ router.get("/", (request: any, response: any) => {
   //RoP owner decision
   const choice = params["text"];
 
-  
+  console.log(params, choice);
 });
+
+module.exports = router;

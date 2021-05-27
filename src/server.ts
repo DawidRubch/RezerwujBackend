@@ -1,28 +1,33 @@
-const axios = require("axios");
-const express = require("express");
+import { APIURLS } from "./core/ImportantVariables/variables";
+
+import express from "express";
 const cors = require("cors");
+
 const app = express();
 
 require("dotenv").config();
 
-import { APIURLS } from "./core/ImportantVariables/variables";
 app.use(cors());
 
 app.use(express.json());
-
 const PORT = process.env.PORT || 5000;
-
+app.use(express.static(__dirname + '/views'));
+app.set("views", __dirname +"/views");
+app.set("view engine", "ejs");
 //Routes
-const getRestaurantsRoute = require("../src/routes/getRestaurantsArray");
-const reservationHandler = require("../src/routes/reservationHandler");
-const findNextAvailable = require("../src/routes/findNextAvailable");
-const getRestaurantInfoDescriptionPage = require("../src/routes/getRestaurantInfoDescriptionPage");
-const getRestaurantInfoConfirmPage = require("../src/routes/getRestaurantInfoConfirmPage");
-const getRoPAlternativeBookingHours = require("../src/routes/getRoPAlternativeBookingHours");
-const receiveSms = require("../src/routes/webhooks/receiveMessages");
+const getRestaurantsRoute = require("./routes/Restaurant/getRestaurantsArray");
+const reservationHandler = require("./routes/Reservation/reservationHandler");
+const getRestaurantInfoDescriptionPage = require("./routes/Restaurant/getRestaurantInfoDescriptionPage");
+const getRestaurantInfoConfirmPage = require("./routes/Restaurant/getRestaurantInfoConfirmPage");
+const getRoPAlternativeBookingHours = require("./routes/Restaurant/getRoPAlternativeBookingHours");
+const receiveSms = require("./routes/webhooks/receiveMessages");
+const confirmReservation = require("./routes/Reservation/confirmReservation");
 app.use(APIURLS.getRestaurants, getRestaurantsRoute);
 app.use(APIURLS.reservation.reservation, reservationHandler);
-app.use(APIURLS.findNextAvailable, findNextAvailable);
+
+app.get("/", (req, res) => {
+  res.render("index",{date:"25.02",time:"15:00",people:10});
+});
 app.use(
   APIURLS.getRestaurantInfoDescriptionPage,
   getRestaurantInfoDescriptionPage
