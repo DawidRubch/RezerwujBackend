@@ -12,16 +12,20 @@
 <body>
     <div class="info">
         <h2>Data</h2>
-        <p>
+        <p id="date">
             <%= date%>
         </p>
         <h2>Godzina</h2>
-        <p>
+        <p id="time">
             <%= time%>
         </p>
         <h2>Ilość osób</h2>
-        <p>
+        <p id="people">
             <%= people%>
+        </p>
+        <h2>Numer klienta</h2>
+        <p id="clientNumber">
+            <%= clientNumber%>
         </p>
     </div>
 
@@ -30,7 +34,7 @@
         color: white;
         background-color: green;
         margin: 20px;
-      " id="confirm ">
+      " id="confirm">
       Potwierdzam
     </button>
     <button style="
@@ -42,6 +46,7 @@
       " id="reject">
       Odrzucam
     </button>
+    <script type="text/javascript" src="script.js"></script>
 </body>
 
 </html>

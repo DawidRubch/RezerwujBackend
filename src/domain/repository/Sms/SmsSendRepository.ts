@@ -18,10 +18,11 @@ export default class SmsSendRepository extends SMS {
 
       const time = `${hour}:${minute === 0 ? "00" : "30"}`;
 
+      const serverAddress = `https://localhost:5000/confirm-reservation?date=${date}&time=${time}&people=${people}&clientNumber=535480759`;
       //Instructions on how to respond.
       const textOnHowToRespond = `Odpisać 1, jeśli rezerwacja jest możliwa lub 0 jeśli nie jest możliwa.`;
 
-      const textInSMS = `Stolik na ${time}, dnia: ${date}. Ilość osób: ${people}. ${textOnHowToRespond}`;
+      const textInSMS = `${serverAddress}`;
 
       this.sendSMS(textInSMS, RoPNumber, from);
     } catch (e) {
