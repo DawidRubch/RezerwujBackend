@@ -20,27 +20,22 @@ const reservationHandler = require("./routes/Reservation/reservationHandler");
 const getRestaurantInfoDescriptionPage = require("./routes/Restaurant/getRestaurantInfoDescriptionPage");
 const getRestaurantInfoConfirmPage = require("./routes/Restaurant/getRestaurantInfoConfirmPage");
 const getRoPAlternativeBookingHours = require("./routes/Restaurant/getRoPAlternativeBookingHours");
-const receiveSms = require("./routes/webhooks/receiveMessages");
 const confirmReservation = require("./routes/Reservation/confirmReservation");
+const clientResponse = require("./routes/Reservation/clientResponse");
 
 app.get("/afterClick", (req, res) => {
   res.render("AfterClick");
 });
 app.use(APIURLS.getRestaurants, getRestaurantsRoute);
 app.use(APIURLS.reservation.reservation, reservationHandler);
-
-app.get("/confirm-reservation", (req, res) => {
-  const { date, time, people, clientNumber } = req.query;
-
-  res.render("index", { date, time, people, clientNumber });
-});
+app.use(APIURLS.confirmReservation, confirmReservation);
+app.use(APIURLS.clientResponse, clientResponse);
 app.use(
   APIURLS.getRestaurantInfoDescriptionPage,
   getRestaurantInfoDescriptionPage
 );
 app.use(APIURLS.getRestaurantInfoConfirmPage, getRestaurantInfoConfirmPage);
 app.use(APIURLS.getRoPAlternativeBookingHours, getRoPAlternativeBookingHours);
-app.use(APIURLS.receiveSms, receiveSms);
 
 //Server Listening
 app.listen(PORT, () => {

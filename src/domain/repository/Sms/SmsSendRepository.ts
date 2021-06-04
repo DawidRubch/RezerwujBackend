@@ -1,4 +1,5 @@
 import { MessageError } from "nexmo";
+import { APIURLS } from "../../../core/ImportantVariables/variables";
 import { BookTime } from "../../../data/models";
 import SMS from "../../../data/superclasses/Sms";
 
@@ -18,9 +19,7 @@ export default class SmsSendRepository extends SMS {
 
       const time = `${hour}:${minute === 0 ? "00" : "30"}`;
 
-      const serverAddress = `https://localhost:5000/confirm-reservation?date=${date}&time=${time}&people=${people}&clientNumber=535480759`;
-      //Instructions on how to respond.
-      const textOnHowToRespond = `Odpisać 1, jeśli rezerwacja jest możliwa lub 0 jeśli nie jest możliwa.`;
+      const serverAddress = `${APIURLS.serverAddress}/confirm-reservation?date=${date}&time=${time}&people=${people}&clientNumber=535480759`;
 
       const textInSMS = `${serverAddress}`;
 
@@ -31,9 +30,23 @@ export default class SmsSendRepository extends SMS {
   }
 
   sendRespondToClient = (
-    { people, hour, minute, day, month }: BookTime,
-    respond: 0 | 1
-  ) => {};
+    date: string,
+    time: string,
+    people: string,
+    didRestaurantAgreed: boolean,
+    clientPhoneNumber: string
+  ) => {
+    const reservationInfoText = `Twoja rezerwacja na ${time},data ${date} dla ${people}.`;
+    const confirmResponseText = `${reservationInfoText}Została potwierdzona! Bardzo dziękujemy za korzystanie z naszego portalu!`;
+
+    const declineResponseText = `${reservationInfoText}. Niestety została odrzucona.`;
+
+    this.sendSMS(
+      didRestaurantAgreed ? confirmResponseText : declineResponseText,
+      clientPhoneNumber,
+      "REZERWUJ"
+    );
+  };
 
   sendSMS = (text: string, to: string, from: string) => {
     //Callback executed when SMS is sent
