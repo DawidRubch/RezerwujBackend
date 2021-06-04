@@ -1,11 +1,14 @@
 const confirmButton = document.getElementById("confirm");
 const rejectButton = document.getElementById("reject");
 
-const serverAdress = "https://localhost:5000";
+//!!!!!This is a really important variable
+//Better to be put elsewhere or inside process.ENV
+const serverAdress = "https://server.rezerwuj.co";
 
 const { innerText: time } = document.getElementById("time");
 const { innerText: people } = document.getElementById("people");
 const { innerText: date } = document.getElementById("date");
+const { innerText: clientNumber } = document.getElementById("clientNumber");
 
 const sendResponseToClient = (isConfirmed, date, time, people, clientNumber) =>
     fetch(
@@ -15,11 +18,11 @@ const sendResponseToClient = (isConfirmed, date, time, people, clientNumber) =>
     );
 
 confirmButton.addEventListener("click", () => {
-    sendResponseToClient(true, date, time, people);
+    sendResponseToClient(true, date, time, people, clientNumber);
     location.href = "afterClick";
 });
 
 rejectButton.addEventListener("click", () => {
-    sendResponseToClient(false, date, time, people);
+    sendResponseToClient(false, date, time, people, clientNumber);
     location.href = "afterClick";
 });
