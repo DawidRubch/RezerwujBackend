@@ -1,6 +1,6 @@
-import { RestaurantPubDb } from "../data/database/RestaurantPubDataBase";
-import { BookTime } from "../data/models";
-import { RestaurantPubRepository } from "../domain/repository/Places/RestaurantPubRepository";
+import { RestaurantPubDb } from "../../data/database/RestaurantPubDataBase";
+import { BookTime } from "../../data/models";
+import { RestaurantPubRepository } from "../../domain/repository/Places/RestaurantPubRepository";
 
 const express = require("express");
 const router = express.Router();

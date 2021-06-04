@@ -1,8 +1,8 @@
-import { BookTime, RestaurantOrPub, ROPLocation } from "../data/models/";
+import { BookTime, RestaurantOrPub, ROPLocation } from "../../data/models/";
 
-import { RestaurantPubRepository } from "../domain/repository/Places/RestaurantPubRepository";
-import { GetRestaurantsJson } from "../core/Interfaces";
-import { DEFAULTADDRESS } from "../core/ImportantVariables/variables";
+import { RestaurantPubRepository } from "../../domain/repository/Places/RestaurantPubRepository";
+import { GetRestaurantsJson } from "../../core/Interfaces";
+import { DEFAULTADDRESS } from "../../core/ImportantVariables/variables";
 const express = require("express");
 
 const axios = require("axios");

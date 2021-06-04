@@ -1,7 +1,7 @@
 import express from "express";
-import { isBookTimeFree } from "../core/helpers/isBookTimeFree";
-import { RestaurantPubDb } from "../data/database/RestaurantPubDataBase";
-import { BookTime } from "../data/models";
+import { isBookTimeFree } from "../../core/helpers/isBookTimeFree";
+import { RestaurantPubDb } from "../../data/database/RestaurantPubDataBase";
+import { BookTime } from "../../data/models";
 
 const router = express.Router();
 

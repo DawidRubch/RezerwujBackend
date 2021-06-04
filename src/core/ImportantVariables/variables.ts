@@ -21,5 +21,6 @@ export const APIURLS = {
   getRoPAlternativeBookingHours: "/getRoPAlternativeBookingHours",
   getRestaurantInfoDescriptionPage: "/getRoPInfoDescriptionPage",
   getRestaurantInfoConfirmPage: "/getRoPInfoConfirmPage",
-  receiveSms: "/webhooks/inbound-sms",
+  confirmReservation: "/confirm-reservation",
+  clientResponse: "/client-response",
 };

@@ -1,18 +1,18 @@
-import { RestaurantPubDb } from "../data/database/RestaurantPubDataBase";
-import { BookTime } from "../data/models";
-import { APIURLS } from "../core/ImportantVariables/variables";
-import { ReservationFindNextAvaliableJson } from "../core/Interfaces";
-import SmsSendRepository from "../domain/repository/Sms/SmsSendRepository";
+import { RestaurantPubDb } from "../../data/database/RestaurantPubDataBase";
+import { BookTime } from "../../data/models";
+import { APIURLS } from "../../core/ImportantVariables/variables";
+import { ReservationFindNextAvaliableJson } from "../../core/Interfaces";
+import SmsSendRepository from "../../domain/repository/Sms/SmsSendRepository";
 import express from "express";
 
 const router = express.Router();
 
 router.post(APIURLS.reservation.save, async (req, res) => {
   const smsSendRepository = new SmsSendRepository();
-  console.log("Jestem tu");
 
   //If there is no request, sends 400 error
   if (!req) {
+    console.log("Hej")
     res.sendStatus(400);
     return;
   }
