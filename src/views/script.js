@@ -3,7 +3,7 @@ const rejectButton = document.getElementById("reject");
 
 //!!!!!This is a really important variable
 //Better to be put elsewhere or inside process.ENV
-const serverAdress = "https://server.rezerwuj.co";
+const serverAdress = "https://server.rezerwuj.site";
 
 const { innerText: time } = document.getElementById("time");
 const { innerText: people } = document.getElementById("people");
