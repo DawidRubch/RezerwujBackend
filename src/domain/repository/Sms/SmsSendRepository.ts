@@ -10,10 +10,7 @@ export default class SmsSendRepository extends SMS {
   ) {
     try {
       //Contact Name
-      let from = process.env.NEXMO_NUMBER;
-
-      //Sets from to REZERWUJ if the number is undefined
-      if (!from) from = "REZERWUJ";
+     const from = "Rezerwuj"
 
       const date = `${day}.${month < 10 ? "0" + month : month}`;
 
