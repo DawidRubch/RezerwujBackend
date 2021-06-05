@@ -6,17 +6,18 @@ import SMS from "../../../data/superclasses/Sms";
 export default class SmsSendRepository extends SMS {
   sendSmsToRestaurantManager(
     { people, hour, minute, day, month }: BookTime,
-    RoPNumber: string
+    RoPNumber: string,
+    clientNumber?: string
   ) {
     try {
       //Contact Name
-     const from = "Rezerwuj"
+      const from = "Rezerwuj";
 
       const date = `${day}.${month < 10 ? "0" + month : month}`;
 
       const time = `${hour}:${minute === 0 ? "00" : "30"}`;
 
-      const ENDPOINT_ADDRESS = `${process.env.SERVER_ADDRESS}/confirm-reservation?date=${date}&time=${time}&people=${people}&clientNumber=535480759`;
+      const ENDPOINT_ADDRESS = `${process.env.SERVER_ADDRESS}/confirm-reservation?date=${date}&time=${time}&people=${people}&clientNumber=${clientNumber}`;
 
       const textInSMS = `${ENDPOINT_ADDRESS}`;
 

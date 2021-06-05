@@ -12,7 +12,7 @@ router.post(APIURLS.reservation.save, async (req, res) => {
 
   //If there is no request, sends 400 error
   if (!req) {
-    console.log("Hej")
+    console.log("Hej");
     res.sendStatus(400);
     return;
   }
@@ -41,7 +41,11 @@ router.post(APIURLS.reservation.save, async (req, res) => {
       return;
     }
 
-    smsSendRepository.sendSmsToRestaurantManager(bookTime, "48535480759");
+    smsSendRepository.sendSmsToRestaurantManager(
+      bookTime,
+      "48535480759",
+      reqBody.number
+    );
 
     await manageReservation(
       restaurantPubDb.saveReservationToDB(
