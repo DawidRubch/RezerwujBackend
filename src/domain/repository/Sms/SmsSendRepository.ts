@@ -19,9 +19,9 @@ export default class SmsSendRepository extends SMS {
 
       const time = `${hour}:${minute === 0 ? "00" : "30"}`;
 
-      const serverAddress = `${APIURLS.serverAddress}/confirm-reservation?date=${date}&time=${time}&people=${people}&clientNumber=535480759`;
+      const ENDPOINT_ADDRESS = `${process.env.SERVER_ADDRESS}/confirm-reservation?date=${date}&time=${time}&people=${people}&clientNumber=535480759`;
 
-      const textInSMS = `${serverAddress}`;
+      const textInSMS = `${ENDPOINT_ADDRESS}`;
 
       this.sendSMS(textInSMS, RoPNumber, from);
     } catch (e) {
