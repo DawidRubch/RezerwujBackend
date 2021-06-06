@@ -4,7 +4,23 @@ body {
     height: 100%;
 }
 
-.info {
-    display: flex;
-    justify-items: center;
+.confirm {
+    font-size: 6vw;
+    color: white;
+    background-color: green;
+    margin: 20px;
+}
+
+.reject {
+    font-size: 6vw;
+    color: white;
+    background-color: red;
+    margin: 20px;
+}
+
+#date,
+#people,
+#clientNumber,
+#time {
+    font-size: 8vw;
 }

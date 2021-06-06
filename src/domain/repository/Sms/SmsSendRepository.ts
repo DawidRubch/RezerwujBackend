@@ -37,7 +37,7 @@ export default class SmsSendRepository extends SMS {
     const reservationInfoText = `Twoja rezerwacja na ${time},data ${date} dla ${people}.`;
     const confirmResponseText = `${reservationInfoText}Została potwierdzona! Bardzo dziękujemy za korzystanie z naszego portalu!`;
 
-    const declineResponseText = `${reservationInfoText}. Niestety została odrzucona.`;
+    const declineResponseText = `${reservationInfoText} Niestety została odrzucona.`;
 
     this.sendSMS(
       didRestaurantAgreed ? confirmResponseText : declineResponseText,
