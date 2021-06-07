@@ -1,4 +1,5 @@
 import { MessageError } from "nexmo";
+import PhoneNumberValidation from "../../../core/helpers/phoneNumberValidation";
 import { APIURLS } from "../../../core/ImportantVariables/variables";
 import { BookTime } from "../../../data/models";
 import SMS from "../../../data/superclasses/Sms";
@@ -21,7 +22,11 @@ export default class SmsSendRepository extends SMS {
 
       const textInSMS = `${ENDPOINT_ADDRESS}`;
 
-      this.sendSMS(textInSMS, RoPNumber, from);
+      if (PhoneNumberValidation.checkIfNumberIsLegit(clientNumber as string)) {
+        this.sendSMS(textInSMS, RoPNumber, from);
+        return "Sms sent to the restaurant owner";
+      }
+      return "Wrong number, sms was not sent";
     } catch (e) {
       console.log(e);
     }

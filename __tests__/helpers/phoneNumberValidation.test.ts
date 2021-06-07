@@ -7,7 +7,8 @@ const wrongNumberContainsFullLetters = "ABCDEFGHI";
 
 const correctNumber = "535480759";
 
-describe("PhoneNumberValidation", () => {
+//Testing checkIfNumberIsLegit function
+const testCheckIfNumberIsLegit = () => {
   describe("checkIfNumberIsLegit", () => {
     test("should return false if number has not 9 characters", () => {
       expect(
@@ -33,4 +34,19 @@ describe("PhoneNumberValidation", () => {
       ).toBeTruthy();
     });
   });
+};
+
+const testAddPolishAreaCodeToNumber = () => {
+  describe("addPolishAreaCodeToNumber", () => {
+    test("should return number with polish areacode Infront", () => {
+      expect(
+        PhoneNumberValidation.addPolishAreaCodeToNumber(correctNumber)
+      ).toBe("48535480759");
+    });
+  });
+};
+
+describe("PhoneNumberValidation", () => {
+  testCheckIfNumberIsLegit();
+  testAddPolishAreaCodeToNumber();
 });
