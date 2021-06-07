@@ -1,5 +1,5 @@
 import { MessageError } from "nexmo";
-import { APIURLS } from "../../../core/ImportantVariables/variables";
+import PhoneNumberValidation from "../../../core/helpers/phoneNumberValidation";
 import { BookTime } from "../../../data/models";
 import SMS from "../../../data/superclasses/Sms";
 
@@ -21,7 +21,11 @@ export default class SmsSendRepository extends SMS {
 
       const textInSMS = `${ENDPOINT_ADDRESS}`;
 
-      this.sendSMS(textInSMS, RoPNumber, from);
+      if (PhoneNumberValidation.checkIfNumberIsLegit(clientNumber as string)) {
+        this.sendSMS(textInSMS, RoPNumber, from);
+        return "Sms sent to the restaurant owner";
+      }
+      return "Wrong number, sms was not sent";
     } catch (e) {
       console.log(e);
     }
@@ -39,11 +43,19 @@ export default class SmsSendRepository extends SMS {
 
     const declineResponseText = `${reservationInfoText} Niestety została odrzucona.`;
 
-    this.sendSMS(
-      didRestaurantAgreed ? confirmResponseText : declineResponseText,
-      clientPhoneNumber,
-      "REZERWUJ"
-    );
+    const isPhoneNumberLegit =
+      PhoneNumberValidation.checkIfNumberIsLegit(clientPhoneNumber);
+
+    if (isPhoneNumberLegit) {
+      const phoneNumberWithPolishAreaCode =
+        PhoneNumberValidation.addPolishAreaCodeToNumber(clientPhoneNumber);
+
+      this.sendSMS(
+        didRestaurantAgreed ? confirmResponseText : declineResponseText,
+        phoneNumberWithPolishAreaCode,
+        "REZERWUJ"
+      );
+    }
   };
 
   sendSMS = (text: string, to: string, from: string) => {
