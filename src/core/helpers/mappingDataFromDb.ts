@@ -4,22 +4,22 @@ import {
   ROPLocation,
   RestaurantOrPub,
 } from "../../data/models/";
+import { RoPFromFirebase } from "../Interfaces/RoPFromFirebase";
 
 /**
 Function maps data from the database to the RestaurantOrPubArray
  */
+//TODO Add interface to data from backend
 export function mappingDataFromDb(
-  data: any,
+  data: RoPFromFirebase,
   restaurantOrPubArr: RestaurantOrPub[]
 ) {
   const location: ROPLocation = new ROPLocation(
     data.location.lat,
     data.location.long
   );
-  const weekArray: Array<DayOfTheWeekOpenHours | null> = data.weekArray.map(
-    mapWeekDay
-  );
-  const bookTimeArray: BookTime[] = data.bookTimeArray.map(mapBookTime);
+  const weekArray: Array<DayOfTheWeekOpenHours | null> = data.weekArray;
+  const bookTimeArray: BookTime[] = data.bookTimeArray;
 
   restaurantOrPubArr.push(
     new RestaurantOrPub(
@@ -28,6 +28,7 @@ export function mappingDataFromDb(
       data.tags,
       data.shortDescription,
       location,
+      data.ownerNumber,
       data.chairs,
       data.menuLink,
       bookTimeArray,
@@ -38,28 +39,4 @@ export function mappingDataFromDb(
   );
 
   return restaurantOrPubArr;
-}
-
-function mapBookTime(bookTime: BookTime) {
-  const restaurantBookTime = new BookTime(
-    bookTime.minute,
-    bookTime.hour,
-    bookTime.day,
-    bookTime.month,
-    bookTime.year,
-    bookTime.people
-  );
-  restaurantBookTime.name = bookTime.name;
-  return restaurantBookTime;
-}
-
-function mapWeekDay(weekDay: DayOfTheWeekOpenHours | null) {
-  return weekDay === null
-    ? null
-    : new DayOfTheWeekOpenHours(
-        weekDay.openHour,
-        weekDay.openMinute,
-        weekDay.closingHour,
-        weekDay.closingMinute
-      );
 }

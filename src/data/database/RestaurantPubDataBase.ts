@@ -3,6 +3,7 @@ import admin from "firebase-admin";
 import { BookTime, RestaurantOrPub } from "../models";
 
 import { mappingDataFromDb } from "../../core/helpers/mappingDataFromDb";
+import { RoPFromFirebase } from "../../core/Interfaces/RoPFromFirebase";
 
 /**
  Class with diffrent functions to map the data from the database.
@@ -16,7 +17,7 @@ export class RestaurantPubDb {
     const { docs } = await db.collection(this.collection).get();
 
     for (const doc of docs) {
-      mappingDataFromDb(doc.data(), restaurantOrPubArr);
+      mappingDataFromDb(doc.data() as RoPFromFirebase, restaurantOrPubArr);
     }
     return restaurantOrPubArr;
   }
@@ -29,7 +30,7 @@ export class RestaurantPubDb {
     if (!snapshotData) return 0;
 
     const dataInArray: RestaurantOrPub[] = mappingDataFromDb(
-      snapshotData,
+      snapshotData as RoPFromFirebase,
       restaurantOrPubArr
     );
     const data: RestaurantOrPub = dataInArray[0];
