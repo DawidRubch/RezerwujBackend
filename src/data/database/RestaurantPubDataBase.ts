@@ -13,7 +13,7 @@ export class RestaurantPubDb {
   collection = "Restaurants";
 
   async getAllDocuments(): Promise<RestaurantOrPub[]> {
-    const restaurantOrPubArr: any[] = [];
+    const restaurantOrPubArr: RestaurantOrPub[] = [];
     const { docs } = await db.collection(this.collection).get();
 
     for (const doc of docs) {
