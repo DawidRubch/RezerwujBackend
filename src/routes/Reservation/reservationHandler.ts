@@ -4,7 +4,7 @@ import { APIURLS } from "../../core/ImportantVariables/variables";
 import { ReservationFindNextAvaliableJson } from "../../core/Interfaces";
 import SmsSendRepository from "../../domain/repository/Sms/SmsSendRepository";
 import express from "express";
-
+import OwnerNumbersDb from "../../data/database/OwnerNumbersDb";
 const router = express.Router();
 
 router.post(APIURLS.reservation.save, async (req, res) => {
@@ -21,7 +21,7 @@ router.post(APIURLS.reservation.save, async (req, res) => {
 
   const reqBody: ReservationFindNextAvaliableJson = req.body;
   try {
-    const bookTimeReq: any = reqBody.bookTime;
+    const bookTimeReq = reqBody.bookTime;
 
     const bookTime: BookTime = new BookTime(
       bookTimeReq.minute,
@@ -41,11 +41,27 @@ router.post(APIURLS.reservation.save, async (req, res) => {
       return;
     }
 
-    smsSendRepository.sendSmsToRestaurantManager(
-      bookTime,
-      "48535480759",
-      reqBody.number
+    //RoP owner number
+    const ownerNumber = await OwnerNumbersDb.getOwnerNumberByRoPName(
+      reqBody.name
     );
+
+    console.log(ownerNumber)
+    //If number doesnt exists the me
+    if (ownerNumber === null) {
+      smsSendRepository.sendSMS(
+        "Spprawdz ownerNumber w firebase",
+        "48535480759",
+        "Rezerwuj"
+      );
+      return;
+    }
+
+    // smsSendRepository.sendSmsToRestaurantManager(
+    //   bookTime,
+    //   ownerNumber,
+    //   reqBody.number
+    // );
 
     await manageReservation(
       restaurantPubDb.saveReservationToDB(
@@ -64,12 +80,12 @@ router.post(APIURLS.reservation.save, async (req, res) => {
   }
 });
 
-router.post(APIURLS.reservation.delete, async (req: any, res: any) => {
+router.post(APIURLS.reservation.delete, async (req, res) => {
   const reqBody: ReservationFindNextAvaliableJson = req.body;
   const restaurantPubDb: RestaurantPubDb = new RestaurantPubDb();
 
-  const bookTimeReq: any = reqBody.bookTime;
-  const bookTime: BookTime = new BookTime(
+  const bookTimeReq = reqBody.bookTime;
+  const bookTime = new BookTime(
     bookTimeReq.minute,
     bookTimeReq.hour,
     bookTimeReq.day,

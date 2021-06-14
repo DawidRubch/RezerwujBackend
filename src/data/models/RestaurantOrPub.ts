@@ -9,6 +9,7 @@ export class RestaurantOrPub {
   shortDescription: string;
   location: ROPLocation;
   distance: number;
+  ownerNumber: string;
   chairs: number;
   menuLink: string;
   bookTimeArray: BookTime[];
@@ -24,6 +25,7 @@ export class RestaurantOrPub {
     tags: string[],
     shortDescription: string,
     location: ROPLocation,
+    ownerNumber: string,
     //Distance is -1 by default
     chairs: number,
     menuLink: string,
@@ -43,6 +45,7 @@ export class RestaurantOrPub {
     this.type = type;
     this.tags = tags;
     this.shortDescription = shortDescription;
+    this.ownerNumber = ownerNumber;
     this.distance = -1;
     this.location = location;
     this.chairs = chairs;
@@ -63,6 +66,7 @@ export function fromJson({
   tags,
   shortDescription,
   chairs,
+  ownerNumber,
   menuLink,
   image,
   descriptionPageImg,
@@ -73,9 +77,8 @@ export function fromJson({
     location.lat,
     location.long
   );
-  const weekArrayToReturn: Array<DayOfTheWeekOpenHours | null> = weekArray.map(
-    mapWeekDay
-  );
+  const weekArrayToReturn: Array<DayOfTheWeekOpenHours | null> =
+    weekArray.map(mapWeekDay);
   const bookTimeArrayToReturn: BookTime[] = bookTimeArray.map(mapBookTime);
   const restaurantOrPubEntity = new RestaurantOrPub(
     name,
@@ -83,6 +86,7 @@ export function fromJson({
     tags,
     shortDescription,
     locationToReturn,
+    ownerNumber,
     chairs,
     menuLink,
     bookTimeArrayToReturn,
@@ -98,7 +102,8 @@ export function fromJson({
 
   restaurantOrPubEntity.distance = distance;
 
-  restaurantOrPubEntity.alternativeBookingHours = alternativeBookingHoursToReturn;
+  restaurantOrPubEntity.alternativeBookingHours =
+    alternativeBookingHoursToReturn;
 
   return restaurantOrPubEntity;
 }
@@ -111,7 +116,14 @@ function mapBookTime({
   people,
   name,
 }: BookTime) {
-  const restaurantBookTime = new BookTime(minute, hour, day, month, year, people);
+  const restaurantBookTime = new BookTime(
+    minute,
+    hour,
+    day,
+    month,
+    year,
+    people
+  );
   restaurantBookTime.name = name;
   return restaurantBookTime;
 }
