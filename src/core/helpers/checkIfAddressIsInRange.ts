@@ -16,29 +16,31 @@ export function calculateDistance(
   placeLocation: ROPLocation,
   restaurantLocation: ROPLocation
 ) {
-  //EarthRadius
 
-  const earthRadius: number = 6371;
+  
+  //EarthRadius
+  const earthRadius = 6371;
 
   //Converting diffrent values to radians
 
-  let latDiffrence = convertToRad(placeLocation.lat - restaurantLocation.lat);
-  let logDiffrence = convertToRad(placeLocation.long - restaurantLocation.long);
-  let lat1 = convertToRad(placeLocation.lat);
-  let lat2 = convertToRad(restaurantLocation.lat);
+  const latDiffrence = convertToRad(placeLocation.lat - restaurantLocation.lat);
+  const logDiffrence = convertToRad(
+    placeLocation.long - restaurantLocation.long
+  );
+  const lat1 = convertToRad(placeLocation.lat);
+  const lat2 = convertToRad(restaurantLocation.lat);
 
   //Calculations
-
-  let a: number =
+  const a =
     Math.sin(latDiffrence / 2) * Math.sin(latDiffrence / 2) +
     Math.sin(logDiffrence / 2) *
       Math.sin(logDiffrence / 2) *
       Math.cos(lat1) *
       Math.cos(lat2);
 
-  let c: number = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-  let d: number = earthRadius * c;
+  const d = earthRadius * c;
 
   return d;
 }

@@ -9,11 +9,11 @@ import { mappingDataFromDb } from "../../core/helpers/mappingDataFromDb";
  */
 export class RestaurantPubDb {
   //Collection name in firestore database
-  collectionName = "Restaurants";
+  collection = "Restaurants";
 
   async getAllDocuments(): Promise<RestaurantOrPub[]> {
-    let restaurantOrPubArr: any[] = [];
-    const { docs } = await db.collection(this.collectionName).get();
+    const restaurantOrPubArr: any[] = [];
+    const { docs } = await db.collection(this.collection).get();
 
     for (const doc of docs) {
       mappingDataFromDb(doc.data(), restaurantOrPubArr);
@@ -22,8 +22,8 @@ export class RestaurantPubDb {
   }
 
   async getRestaurantOrPubByNameFromDb(name: string) {
-    let restaurantOrPubArr: any[] = [];
-    const snapshot = await db.collection(this.collectionName).doc(name).get();
+    const restaurantOrPubArr: any[] = [];
+    const snapshot = await db.collection(this.collection).doc(name).get();
 
     const snapshotData = snapshot.data();
     if (!snapshotData) return 0;
@@ -31,7 +31,7 @@ export class RestaurantPubDb {
     const dataInArray: RestaurantOrPub[] = mappingDataFromDb(
       snapshotData,
       restaurantOrPubArr
-    );                        
+    );
     const data: RestaurantOrPub = dataInArray[0];
 
     return data;
@@ -40,6 +40,7 @@ export class RestaurantPubDb {
     bookTime: BookTime,
     restaurantName: string,
     res: any,
+
     email?: string,
     personName?: string,
     surName?: string,
@@ -75,6 +76,7 @@ export class RestaurantPubDb {
     arrayAddOrRemove: (...elements: any) => FirebaseFirestore.FieldValue,
     restaurantName: string,
     res: any,
+
     email?: string,
     personName?: string,
     surName?: string,
@@ -83,10 +85,10 @@ export class RestaurantPubDb {
     if (!bookTime.minute) {
       bookTime.minute = 0;
     }
-    const document = db.collection(this.collectionName).doc(restaurantName);
+    const document = db.collection(this.collection).doc(restaurantName);
     await document.get().then((doc) => {
       if (doc.exists) {
-        let returnValue = arrayAddOrRemove({
+        const returnValue = arrayAddOrRemove({
           day: bookTime.day,
           hour: bookTime.hour,
           minute: bookTime.minute,

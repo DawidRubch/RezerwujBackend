@@ -19,11 +19,11 @@ router.post(APIURLS.reservation.save, async (req, res) => {
 
   const restaurantPubDb: RestaurantPubDb = new RestaurantPubDb();
 
-  let reqBody: ReservationFindNextAvaliableJson = req.body;
+  const reqBody: ReservationFindNextAvaliableJson = req.body;
   try {
-    let bookTimeReq: any = reqBody.bookTime;
+    const bookTimeReq: any = reqBody.bookTime;
 
-    let bookTime: BookTime = new BookTime(
+    const bookTime: BookTime = new BookTime(
       bookTimeReq.minute,
       bookTimeReq.hour,
       bookTimeReq.day,
@@ -52,6 +52,7 @@ router.post(APIURLS.reservation.save, async (req, res) => {
         bookTime,
         reqBody.name,
         res,
+
         reqBody.email,
         reqBody.personName,
         reqBody.surName,
@@ -64,11 +65,11 @@ router.post(APIURLS.reservation.save, async (req, res) => {
 });
 
 router.post(APIURLS.reservation.delete, async (req: any, res: any) => {
-  let reqBody: ReservationFindNextAvaliableJson = req.body;
+  const reqBody: ReservationFindNextAvaliableJson = req.body;
   const restaurantPubDb: RestaurantPubDb = new RestaurantPubDb();
 
-  let bookTimeReq: any = reqBody.bookTime;
-  let bookTime: BookTime = new BookTime(
+  const bookTimeReq: any = reqBody.bookTime;
+  const bookTime: BookTime = new BookTime(
     bookTimeReq.minute,
     bookTimeReq.hour,
     bookTimeReq.day,

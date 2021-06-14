@@ -5,7 +5,7 @@ import {
   ROPLocation,
 } from "../../data/models/";
 import { RestaurantPubRepository } from "../../domain/repository/Places/RestaurantPubRepository";
-let weekArray = [
+const weekArray = [
   null,
   new DayOfTheWeekOpenHours(10, 0, 22, 0),
   new DayOfTheWeekOpenHours(10, 0, 22, 0),
@@ -15,7 +15,7 @@ let weekArray = [
   new DayOfTheWeekOpenHours(11, 0, 18, 0),
 ];
 
-export let tBookTimeArray = [
+export const tBookTimeArray = [
   //18:30 21 October 2020 25 people
   new BookTime(30, 18, 21, 10, 2020, 25),
   //16:00 21 October 2020 30 people
@@ -68,7 +68,7 @@ export const tFullBookedArray = [
   //21:00 21 October 2020 16 people
   new BookTime(0, 21, 21, 10, 2020, 16),
 ];
-export let tRestaurantCeglanaSzczecin = new RestaurantOrPub(
+export const tRestaurantCeglanaSzczecin = new RestaurantOrPub(
   "Ceglana",
   "włoska",
   ["mila"],
@@ -82,9 +82,9 @@ export let tRestaurantCeglanaSzczecin = new RestaurantOrPub(
   weekArray
 );
 
-export let tRestaurantPubRepository = new RestaurantPubRepository();
+export const tRestaurantPubRepository = new RestaurantPubRepository();
 
-export let tAlternativeBookTimeArray = [
+export const tAlternativeBookTimeArray = [
   //10:30 25 lis 2020 5 osob
   new BookTime(30, 10, 25, 11, 2020, 5),
   //11:00 25 lis 2020 5 osob
@@ -99,7 +99,7 @@ export let tAlternativeBookTimeArray = [
   new BookTime(0, 13, 25, 11, 2020, 5),
 ];
 
-export let tAlternativeBookTimeArrayWith2Zeros = [
+export const tAlternativeBookTimeArrayWith2Zeros = [
   //20:30 25 lis 2020 5 osob
   new BookTime(30, 20, 25, 11, 2020, 5),
   //21:00 25 lis 2020 5 osob
@@ -111,7 +111,7 @@ export let tAlternativeBookTimeArrayWith2Zeros = [
   0,
   0,
 ];
-export let tAlternativeBookTimeArrayWith2NullFront = [
+export const tAlternativeBookTimeArrayWith2NullFront = [
   null,
   null,
   //16:30 25 lis 2020 25 osob
@@ -124,7 +124,7 @@ export let tAlternativeBookTimeArrayWith2NullFront = [
   new BookTime(0, 18, 26, 11, 2020, 25),
 ];
 
-export let bookTimeArrayNotSorted = [
+export const bookTimeArrayNotSorted = [
   //16:30 25 lis 2020 25 osob
   new BookTime(30, 16, 26, 11, 2020, 25),
   //17:00 26 lis 2020 25 osob
@@ -152,7 +152,7 @@ export let bookTimeArrayNotSorted = [
   //13:00 25 grud 2020 5 osob
   new BookTime(0, 13, 25, 12, 2020, 5),
 ];
-export let bookTimeArraySorted = [
+export const bookTimeArraySorted = [
   //13:00 25 lis 2019 5 osob
   new BookTime(0, 13, 25, 11, 2019, 5),
   //10:30 25 lis 2020 5 osob
@@ -183,12 +183,12 @@ export let bookTimeArraySorted = [
 //Plac rodla - Ceglana around 1.49 km
 //Plac rodla - Ładoga around 1.05 km
 //Plac Rodła - Urząd Gminy Police around 13.24 km
-export let locationOfPlacRodlaSzczecin: ROPLocation = new ROPLocation(
+export const locationOfPlacRodlaSzczecin: ROPLocation = new ROPLocation(
   53.4321142,
   14.5553889
 );
 
-let tRestaurantŁadogaSzczecin = new RestaurantOrPub(
+const tRestaurantŁadogaSzczecin = new RestaurantOrPub(
   "Ładoga",
   "rosyjska",
   [],
@@ -201,7 +201,7 @@ let tRestaurantŁadogaSzczecin = new RestaurantOrPub(
   "descriptionPageImg",
   []
 );
-let urządGminyPoliceSzczecin = new RestaurantOrPub(
+const urządGminyPoliceSzczecin = new RestaurantOrPub(
   "Urząd Gminy",
   "",
   [],
@@ -214,12 +214,12 @@ let urządGminyPoliceSzczecin = new RestaurantOrPub(
   "descriptionPageImg",
   []
 );
-export let restaurantOrPubArrayNotSorted: RestaurantOrPub[] = [
+export const restaurantOrPubArrayNotSorted: RestaurantOrPub[] = [
   urządGminyPoliceSzczecin,
   tRestaurantCeglanaSzczecin,
   tRestaurantŁadogaSzczecin,
 ];
-export let restaurantOrPubArraySorted: RestaurantOrPub[] = [
+export const restaurantOrPubArraySorted: RestaurantOrPub[] = [
   tRestaurantŁadogaSzczecin,
   tRestaurantCeglanaSzczecin,
   urządGminyPoliceSzczecin,

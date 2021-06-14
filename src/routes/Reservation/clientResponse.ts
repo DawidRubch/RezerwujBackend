@@ -9,8 +9,6 @@ const convertIsConfirmedToBoolean = (isConfirmed: any) =>
 router.get("/", (req, res) => {
   const smsSendRepository = new SmsSendRepository();
   const { isConfirmed, date, time, people, clientNumber } = req.query;
- 
-
   const isConfirmedBoolean = convertIsConfirmedToBoolean(isConfirmed);
 
   smsSendRepository.sendRespondToClient(
