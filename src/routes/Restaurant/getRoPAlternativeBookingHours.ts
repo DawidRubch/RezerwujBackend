@@ -18,11 +18,10 @@ router.post(
     { body: { bookTime, name } }: GetRoPAlternativeBookingHoursReq,
     res: any
   ) => {
-
     const restaurantPubRepository = new RestaurantPubRepository();
-    
+
     const restaurantPubDb = new RestaurantPubDb();
-    
+
     //Getting restaurant or pub from array
     const roP = await restaurantPubDb.getRestaurantOrPubByNameFromDb(name);
 
@@ -31,10 +30,8 @@ router.post(
       return;
     }
 
-    const alternativeBookingHours = restaurantPubRepository.generateAlternativeBookingHours(
-      bookTime,
-      roP
-    );
+    const alternativeBookingHours =
+      restaurantPubRepository.generateAlternativeBookingHours(bookTime, roP);
 
     res.send(alternativeBookingHours);
   }

@@ -4,13 +4,14 @@ import {
   DayOfTheWeekOpenHours,
   ROPLocation,
 } from "../../../data/models";
-import { isBookTimeFree } from "../../../core/helpers/isBookTimeFree";
+
 import { RestaurantPubDb } from "../../../data/database/RestaurantPubDataBase";
 import {
   calculateDistance,
   checkIfAddressIsInRange,
 } from "../../../core/helpers/checkIfAddressIsInRange";
 import { sortByClosestDistance } from "../../../core/SortingFunctions/sortByClosestDistance";
+
 export class RestaurantPubRepository {
   restaurantOrPubDb = new RestaurantPubDb();
   /**
@@ -20,16 +21,16 @@ export class RestaurantPubRepository {
     searchingAddress: ROPLocation,
     bookTime: BookTime
   ) {
-    let placesArr: RestaurantOrPub[] = [];
+    const placesArr: RestaurantOrPub[] = [];
     //Array of places taken from DB
-    const RestaurantOrPubsArray = await this.restaurantOrPubDb.getAllDocuments();
-
-    const restaurantPubRepository = new RestaurantPubRepository();
+    const RestaurantOrPubsArray =
+      await this.restaurantOrPubDb.getAllDocuments();
 
     //Looping over places
     for (const restaurantOrPub of RestaurantOrPubsArray) {
       //Desctructing variables from restaurantOrPub entity
-      let { distance, location } = restaurantOrPub;
+      let { distance } = restaurantOrPub;
+      const { location } = restaurantOrPub;
 
       //Checks if restaurantis in range
       const isPlaceInRange = checkIfAddressIsInRange(
@@ -42,7 +43,7 @@ export class RestaurantPubRepository {
         distance = calculateDistance(searchingAddress, location);
 
         //Returns alternative booking array for BookTime
-        const alternativeBookingHoursOr0 = restaurantPubRepository.generateAlternativeBookingHours(
+        const alternativeBookingHoursOr0 = this.generateAlternativeBookingHours(
           bookTime,
           restaurantOrPub
         );
@@ -53,6 +54,23 @@ export class RestaurantPubRepository {
     }
     return sortByClosestDistance(placesArr);
   }
+
+  generateArrayOfRestaurantsFromCertainCity = async (bookTime: BookTime) => {
+    //Array of places taken from DB
+    const RestaurantOrPubsArray =
+      await this.restaurantOrPubDb.getAllDocuments();
+
+    for (const restaurantOrPub of RestaurantOrPubsArray) {
+      //Returns alternative booking array for BookTime
+      const alternativeBookingHoursOr0 = this.generateAlternativeBookingHours(
+        bookTime,
+        restaurantOrPub
+      );
+      restaurantOrPub.alternativeBookingHours = alternativeBookingHoursOr0;
+    }
+
+    return RestaurantOrPubsArray;
+  };
   /**
    *The function generates 6 alternative reservation times for a person.
    *
@@ -64,8 +82,8 @@ export class RestaurantPubRepository {
     bookTime: BookTime,
     restaurantOrPub: RestaurantOrPub
   ): Array<null | BookTime | 0> | 0 {
-    let alternativeBookingHoursArray: Array<null | BookTime | 0> = [];
-    let restaurantBookTime: BookTime = new BookTime(
+    const alternativeBookingHoursArray: Array<null | BookTime | 0> = [];
+    const restaurantBookTime: BookTime = new BookTime(
       bookTime.minute,
       bookTime.hour,
       bookTime.day,
@@ -74,15 +92,15 @@ export class RestaurantPubRepository {
       bookTime.people
     );
     //Creating the date object
-    var d: Date = new Date(
+    const d: Date = new Date(
       restaurantBookTime.year,
       restaurantBookTime.month - 1,
       restaurantBookTime.day
     );
     //Checking which day of the week it is
-    let dayOfTheWeek: number = d.getDay();
+    const dayOfTheWeek: number = d.getDay();
 
-    let dayOpeningHours: DayOfTheWeekOpenHours | null =
+    const dayOpeningHours: DayOfTheWeekOpenHours | null =
       restaurantOrPub.weekArray[dayOfTheWeek];
 
     //Checking if on the day place is closed
@@ -93,8 +111,7 @@ export class RestaurantPubRepository {
       checkIfBookTimeViable(
         alternativeBookingHoursArray,
         restaurantBookTime,
-        dayOpeningHours,
-        restaurantOrPub
+        dayOpeningHours
       );
     }
 
@@ -121,8 +138,7 @@ export class RestaurantPubRepository {
 function checkIfBookTimeViable(
   alternativeBookingHoursArray: Array<null | BookTime | 0>,
   restaurantBookTime: BookTime,
-  { closingHour, openHour, closingMinute }: DayOfTheWeekOpenHours,
-  restaurantOrPub: RestaurantOrPub
+  { closingHour, openHour, closingMinute }: DayOfTheWeekOpenHours
 ) {
   //If minutes are equal to 60 changes to next hour
   if (restaurantBookTime.minute === 60) {
@@ -141,17 +157,6 @@ function checkIfBookTimeViable(
     restaurantBookTime.minute > closingMinute
   ) {
     alternativeBookingHoursArray.push(0);
-  }
-
-  //Checks if the booktime is free
-  else if (
-    !isBookTimeFree(
-      restaurantBookTime,
-      restaurantOrPub.bookTimeArray,
-      restaurantOrPub
-    )
-  ) {
-    alternativeBookingHoursArray.push(null);
   } else {
     alternativeBookingHoursArray.push(
       new BookTime(

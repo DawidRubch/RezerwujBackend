@@ -69,15 +69,15 @@ export function fromJson({
   alternativeBookingHours,
   distance,
 }: RestaurantOrPub): RestaurantOrPub {
-  let locationToReturn: ROPLocation = new ROPLocation(
+  const locationToReturn: ROPLocation = new ROPLocation(
     location.lat,
     location.long
   );
-  let weekArrayToReturn: Array<DayOfTheWeekOpenHours | null> = weekArray.map(
+  const weekArrayToReturn: Array<DayOfTheWeekOpenHours | null> = weekArray.map(
     mapWeekDay
   );
-  let bookTimeArrayToReturn: BookTime[] = bookTimeArray.map(mapBookTime);
-  let restaurantOrPubEntity = new RestaurantOrPub(
+  const bookTimeArrayToReturn: BookTime[] = bookTimeArray.map(mapBookTime);
+  const restaurantOrPubEntity = new RestaurantOrPub(
     name,
     type,
     tags,
@@ -91,7 +91,7 @@ export function fromJson({
     weekArrayToReturn
   );
 
-  let alternativeBookingHoursToReturn =
+  const alternativeBookingHoursToReturn =
     alternativeBookingHours === 0
       ? alternativeBookingHours
       : alternativeBookingHours.map(mapAlternativeBookingHours);
@@ -111,7 +111,7 @@ function mapBookTime({
   people,
   name,
 }: BookTime) {
-  let restaurantBookTime = new BookTime(minute, hour, day, month, year, people);
+  const restaurantBookTime = new BookTime(minute, hour, day, month, year, people);
   restaurantBookTime.name = name;
   return restaurantBookTime;
 }
@@ -121,7 +121,7 @@ function mapWeekDay(weekDay: DayOfTheWeekOpenHours | null) {
     return null;
   }
 
-  let { openHour, openMinute, closingHour, closingMinute } = weekDay;
+  const { openHour, openMinute, closingHour, closingMinute } = weekDay;
 
   return new DayOfTheWeekOpenHours(
     openHour,

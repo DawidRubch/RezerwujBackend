@@ -7,9 +7,9 @@ import { RestaurantPubRepository } from "../../domain/repository/Places/Restaura
 const router = express.Router();
 
 router.post("/", async ({ body }: any, res: any) => {
-  let restaurantOrPubDb = new RestaurantPubDb();
-  let restaurantPubRepository = new RestaurantPubRepository();
-  let bookTimeFromDb = new BookTime(
+  const restaurantOrPubDb = new RestaurantPubDb();
+  const restaurantPubRepository = new RestaurantPubRepository();
+  const bookTimeFromDb = new BookTime(
     body.bookTime.minute,
     body.bookTime.hour,
     body.bookTime.day,
@@ -18,17 +18,17 @@ router.post("/", async ({ body }: any, res: any) => {
     body.bookTime.people
   );
 
-  let RoP = await restaurantOrPubDb.getRestaurantOrPubByNameFromDb(body.name);
+  const RoP = await restaurantOrPubDb.getRestaurantOrPubByNameFromDb(body.name);
 
   if (typeof RoP === "number") {
     return res.status(400).send("Restauracja o podanej nazwie nie istnieje!");
   }
-  let alternativeBookingHours =
+  const alternativeBookingHours =
     restaurantPubRepository.generateAlternativeBookingHours(
       bookTimeFromDb,
       RoP
     );
-  let { descriptionPageImg, name, type, tags, shortDescription, menuLink } =
+  const { descriptionPageImg, name, type, tags, shortDescription, menuLink } =
     RoP;
 
   res.send({

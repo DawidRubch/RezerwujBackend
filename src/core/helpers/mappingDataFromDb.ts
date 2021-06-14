@@ -12,14 +12,14 @@ export function mappingDataFromDb(
   data: any,
   restaurantOrPubArr: RestaurantOrPub[]
 ) {
-  let location: ROPLocation = new ROPLocation(
+  const location: ROPLocation = new ROPLocation(
     data.location.lat,
     data.location.long
   );
-  let weekArray: Array<DayOfTheWeekOpenHours | null> = data.weekArray.map(
+  const weekArray: Array<DayOfTheWeekOpenHours | null> = data.weekArray.map(
     mapWeekDay
   );
-  let bookTimeArray: BookTime[] = data.bookTimeArray.map(mapBookTime);
+  const bookTimeArray: BookTime[] = data.bookTimeArray.map(mapBookTime);
 
   restaurantOrPubArr.push(
     new RestaurantOrPub(
@@ -41,7 +41,7 @@ export function mappingDataFromDb(
 }
 
 function mapBookTime(bookTime: BookTime) {
-  let restaurantBookTime = new BookTime(
+  const restaurantBookTime = new BookTime(
     bookTime.minute,
     bookTime.hour,
     bookTime.day,

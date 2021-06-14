@@ -15,7 +15,7 @@ app.use(express.static(__dirname + "/views"));
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 //Routes
-const getRestaurantsRoute = require("./routes/Restaurant/getRestaurantsArray");
+const getRestaurantsArray = require("./routes/Restaurant/getRestaurantsArray");
 const reservationHandler = require("./routes/Reservation/reservationHandler");
 const getRestaurantInfoDescriptionPage = require("./routes/Restaurant/getRestaurantInfoDescriptionPage");
 const getRestaurantInfoConfirmPage = require("./routes/Restaurant/getRestaurantInfoConfirmPage");
@@ -26,7 +26,7 @@ const clientResponse = require("./routes/Reservation/clientResponse");
 app.get("/afterClick", (req, res) => {
   res.render("AfterClick");
 });
-app.use(APIURLS.getRestaurants, getRestaurantsRoute);
+app.use(APIURLS.getRestaurants, getRestaurantsArray);
 app.use(APIURLS.reservation.reservation, reservationHandler);
 app.use(APIURLS.confirmReservation, confirmReservation);
 app.use(APIURLS.clientResponse, clientResponse);
