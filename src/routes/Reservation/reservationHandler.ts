@@ -46,7 +46,6 @@ router.post(APIURLS.reservation.save, async (req, res) => {
       reqBody.name
     );
 
-    console.log(ownerNumber)
     //If number doesnt exists the me
     if (ownerNumber === null) {
       smsSendRepository.sendSMS(
@@ -60,7 +59,7 @@ router.post(APIURLS.reservation.save, async (req, res) => {
     smsSendRepository.sendSmsToRestaurantManager(
       bookTime,
       ownerNumber,
-       reqBody.number
+      reqBody.number
     );
 
     await manageReservation(
