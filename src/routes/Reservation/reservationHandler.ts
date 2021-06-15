@@ -57,11 +57,11 @@ router.post(APIURLS.reservation.save, async (req, res) => {
       return;
     }
 
-    // smsSendRepository.sendSmsToRestaurantManager(
-    //   bookTime,
-    //   ownerNumber,
-    //   reqBody.number
-    // );
+    smsSendRepository.sendSmsToRestaurantManager(
+      bookTime,
+      ownerNumber,
+       reqBody.number
+    );
 
     await manageReservation(
       restaurantPubDb.saveReservationToDB(
