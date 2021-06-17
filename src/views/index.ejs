@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -34,6 +34,92 @@
     <button class="confirm" id="confirm">Potwierdzam</button>
     <button class="reject" id="reject">Odrzucam</button>
     <script type="text/javascript" src="script.js"></script>
+</body>
+
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="display: flex; justify-content: center;flex-direction: column;">
+        <div style="flex-direction: column;">
+            <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="192" height="66" viewBox="0 0 192 66">
+                <defs>
+                  <clipPath id="clip-RezerwujLOGO">
+                    <rect width="192" height="66"/>
+                  </clipPath>
+                </defs>
+                <g id="RezerwujLOGO" clip-path="url(#clip-RezerwujLOGO)">
+                  <rect width="192" height="66" fill="#fff"/>
+                  <g id="Group_99" data-name="Group 99" transform="translate(-312 138)">
+                    <g id="Group_96" data-name="Group 96" transform="translate(306 -130)">
+                      <g id="Ellipse_1" data-name="Ellipse 1" transform="translate(16 8)" fill="none" stroke="#000" stroke-width="2">
+                        <circle cx="17" cy="17" r="17" stroke="none"/>
+                        <circle cx="17" cy="17" r="16" fill="none"/>
+                      </g>
+                      <path id="Path_1" data-name="Path 1" d="M0,0H8.756" transform="translate(32.623 25.598) rotate(51)" fill="none" stroke="#000" stroke-width="2"/>
+                      <path id="Path_2" data-name="Path 2" d="M0,4.222V16.564" transform="translate(33 10.157)" fill="none" stroke="#000" stroke-width="2"/>
+                      <text id="REZERWUJ" transform="translate(60 13)" font-size="20" font-family="Montserrat-Regular, Montserrat"><tspan x="0" y="19">REZERWUJ</tspan></text>
+                      <g id="Ellipse_4" data-name="Ellipse 4" transform="translate(16 8)" fill="none" stroke="#000" stroke-width="2">
+                        <circle cx="17" cy="17" r="17" stroke="none"/>
+                        <circle cx="17" cy="17" r="16" fill="none"/>
+                      </g>
+                      <path id="Path_7" data-name="Path 7" d="M0,0H8.756" transform="translate(32.623 25.598) rotate(51)" fill="none" stroke="#000" stroke-width="2"/>
+                      <path id="Path_8" data-name="Path 8" d="M0,4.222V16.564" transform="translate(33 10.157)" fill="none" stroke="#000" stroke-width="2"/>
+                      <text id="REZERWUJ-2" data-name="REZERWUJ" transform="translate(60 13)" font-size="20" font-family="Montserrat-Regular, Montserrat"><tspan x="0" y="19">REZERWUJ</tspan></text>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+
+            </div>
+            <div class="info">
+                <p style="font-weight: 600;font-size: 30px;">NOWA REZERWACJA!</p>
+            </div>
+
+            <div class="info">
+                <h2 class="parameterTypeText">Data</h2>
+                <p id="date">
+                    <%= date%>
+                </p>
+
+                <div class="info">
+                    <h2 class="parameterTypeText">Godzina</h2>
+                    <p id="time">
+                        <%= time%>
+                    </p>
+                </div>
+                <div class="info">
+                    <h2 class="parameterTypeText">Ilość osób</h2>
+                    <p id="people">
+                        <%= people%>
+                    </p>
+                </div>
+                <div class="info">
+                    <h2 class="parameterTypeText">Numer klienta</h2>
+                    <p id="clientNumber">
+                        <%= clientNumber%>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button class="btn btn-success btn-lg m-2" id="confirm">
+        Potwierdzam
+      </button>
+            <button class="btn btn-danger btn-lg m-2" id="reject">Odrzucam</button>
+        </div>
+        <script type="text/javascript" src="script.js"></script>
 </body>
 
 </html>
