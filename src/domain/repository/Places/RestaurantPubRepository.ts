@@ -11,6 +11,7 @@ import {
   checkIfAddressIsInRange,
 } from "../../../core/helpers/checkIfAddressIsInRange";
 import { sortByClosestDistance } from "../../../core/SortingFunctions/sortByClosestDistance";
+import { EnviromentType } from "../../../core/Types/EnviromentType";
 
 export class RestaurantPubRepository {
   restaurantOrPubDb = new RestaurantPubDb();
@@ -19,12 +20,14 @@ export class RestaurantPubRepository {
  */
   async generateArrayOfRestaurantsInRadius(
     searchingAddress: ROPLocation,
+    enviromentType: EnviromentType,
     bookTime: BookTime
   ) {
     const placesArr: RestaurantOrPub[] = [];
     //Array of places taken from DB
-    const RestaurantOrPubsArray =
-      await this.restaurantOrPubDb.getAllDocuments();
+    const RestaurantOrPubsArray = await this.restaurantOrPubDb.getAllDocuments(
+      enviromentType
+    );
 
     //Looping over places
     for (const restaurantOrPub of RestaurantOrPubsArray) {
@@ -55,10 +58,14 @@ export class RestaurantPubRepository {
     return sortByClosestDistance(placesArr);
   }
 
-  generateArrayOfRestaurantsFromCertainCity = async (bookTime: BookTime) => {
+  generateArrayOfRestaurantsFromCertainCity = async (
+    bookTime: BookTime,
+    enviromentType: EnviromentType
+  ) => {
     //Array of places taken from DB
-    const RestaurantOrPubsArray =
-      await this.restaurantOrPubDb.getAllDocuments();
+    const RestaurantOrPubsArray = await this.restaurantOrPubDb.getAllDocuments(
+      enviromentType
+    );
 
     for (const restaurantOrPub of RestaurantOrPubsArray) {
       //Returns alternative booking array for BookTime

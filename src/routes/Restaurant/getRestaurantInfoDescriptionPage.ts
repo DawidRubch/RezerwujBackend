@@ -18,7 +18,10 @@ router.post("/", async ({ body }: any, res: any) => {
     body.bookTime.people
   );
 
-  const RoP = await restaurantOrPubDb.getRestaurantOrPubByNameFromDb(body.name);
+  const RoP = await restaurantOrPubDb.getRestaurantOrPubByNameFromDb(
+    body.name,
+    body.enviromentType
+  );
 
   if (typeof RoP === "number") {
     return res.status(400).send("Restauracja o podanej nazwie nie istnieje!");

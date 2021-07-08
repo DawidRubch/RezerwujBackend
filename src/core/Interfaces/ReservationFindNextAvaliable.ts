@@ -1,9 +1,8 @@
+import { EnviromentType } from "../Types/EnviromentType";
+
 export interface ReservationFindNextAvaliableJson {
-  email?: string;
-  personName?: string;
-  surName?: string;
-  number?: string;
   name: string;
+  enviromentType: EnviromentType;
   bookTime: {
     minute: number;
     hour: number;
@@ -13,4 +12,8 @@ export interface ReservationFindNextAvaliableJson {
     people: number;
     name: string;
   };
+  email?: string;
+  personName?: string;
+  surName?: string;
+  number?: string;
 }

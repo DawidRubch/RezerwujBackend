@@ -1,5 +1,5 @@
 export enum FirebaseCollectionNames {
-  RESTAURANTS_PROD = "TestRestaurants",
-  RESTAURANTS_TEST = "Restaurants",
+  RESTAURANTS_TEST = "TestRestaurants",
+  RESTAURANTS_PROD = "Restaurants",
   OWNER_NUMBERS = "OwnerNumbers",
 }
