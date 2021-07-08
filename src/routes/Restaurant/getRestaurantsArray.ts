@@ -11,6 +11,7 @@ router.post(
     {
       body: {
         bookTime: { hour, day, month, year, people, minute },
+        enviromentType,
       },
     }: GetRestaurantsJson,
     res
@@ -36,7 +37,7 @@ router.post(
       const restaurantPubRepository = new RestaurantPubRepository();
 
       restaurantPubRepository
-        .generateArrayOfRestaurantsFromCertainCity(bookTime)
+        .generateArrayOfRestaurantsFromCertainCity(bookTime, enviromentType)
         .then((value: RestaurantOrPub[]) => {
           if (!value) {
             res.sendStatus(404);

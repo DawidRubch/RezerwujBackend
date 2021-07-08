@@ -6,7 +6,10 @@ const router = express.Router();
 
 router.post("/", async ({ body }, res) => {
   const restaurantOrPubDb = new RestaurantPubDb();
-  const RoP = await restaurantOrPubDb.getRestaurantOrPubByNameFromDb(body.name);
+  const RoP = await restaurantOrPubDb.getRestaurantOrPubByNameFromDb(
+    body.name,
+    body.enviromentType
+  );
 
   if (typeof RoP === "number") {
     res.sendStatus(404);

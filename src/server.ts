@@ -1,8 +1,7 @@
 import { APIURLS } from "./core/ImportantVariables/variables";
 
 import express from "express";
-const cors = require("cors");
-
+const cors = require("cors")
 const app = express();
 
 require("dotenv").config();

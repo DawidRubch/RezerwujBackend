@@ -65,9 +65,9 @@ router.post(APIURLS.reservation.save, async (req, res) => {
     await manageReservation(
       restaurantPubDb.saveReservationToDB(
         bookTime,
+        reqBody.enviromentType,
         reqBody.name,
         res,
-
         reqBody.email,
         reqBody.personName,
         reqBody.surName,
@@ -95,7 +95,12 @@ router.post(APIURLS.reservation.delete, async (req, res) => {
 
   bookTime.name = bookTimeReq.name;
   await manageReservation(
-    restaurantPubDb.deleteReservationFromDB(bookTime, reqBody.name, res)
+    restaurantPubDb.deleteReservationFromDB(
+      bookTime,
+      reqBody.enviromentType,
+      reqBody.name,
+      res
+    )
   )
     .then(() => console.log("Success"))
     .catch((err) => {
@@ -106,8 +111,6 @@ router.post(APIURLS.reservation.delete, async (req, res) => {
 async function manageReservation(arrayAddOrRemove: Promise<void>) {
   await arrayAddOrRemove;
 }
-
-module.exports = router;
 
 //Checks if reservation is created before
 const isReservationFromPast = (bookTime: BookTime) => {
@@ -123,3 +126,7 @@ const isReservationFromPast = (bookTime: BookTime) => {
 
   return currentDate > dateFromBookTime;
 };
+
+
+
+module.exports = router;
