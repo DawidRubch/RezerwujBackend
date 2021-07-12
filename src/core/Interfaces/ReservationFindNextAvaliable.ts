@@ -12,8 +12,9 @@ export interface ReservationFindNextAvaliableJson {
     people: number;
     name: string;
   };
+  number: string;
   email?: string;
   personName?: string;
   surName?: string;
-  number?: string;
+  additionalInfo?: string;
 }

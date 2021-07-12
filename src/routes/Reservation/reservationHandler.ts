@@ -12,7 +12,6 @@ router.post(APIURLS.reservation.save, async (req, res) => {
 
   //If there is no request, sends 400 error
   if (!req) {
-    console.log("Hej");
     res.sendStatus(400);
     return;
   }
@@ -46,7 +45,7 @@ router.post(APIURLS.reservation.save, async (req, res) => {
       reqBody.name
     );
 
-    //If number doesnt exists the me
+    //If number doesnt exists, it contacts my private number to fix it quickly
     if (ownerNumber === null) {
       smsSendRepository.sendSMS(
         "Spprawdz ownerNumber w firebase",
@@ -56,10 +55,15 @@ router.post(APIURLS.reservation.save, async (req, res) => {
       return;
     }
 
+    const additionalInfo = reqBody.additionalInfo
+      ? encodeURI(reqBody.additionalInfo)
+      : "";
+
     smsSendRepository.sendSmsToRestaurantManager(
       bookTime,
       ownerNumber,
-      reqBody.number
+      reqBody.number,
+      additionalInfo
     );
 
     await manageReservation(
@@ -126,7 +130,5 @@ const isReservationFromPast = (bookTime: BookTime) => {
 
   return currentDate > dateFromBookTime;
 };
-
-
 
 module.exports = router;

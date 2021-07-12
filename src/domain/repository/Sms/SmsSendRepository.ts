@@ -7,7 +7,8 @@ export default class SmsSendRepository extends SMS {
   sendSmsToRestaurantManager(
     { people, hour, minute, day, month }: BookTime,
     RoPNumber: string,
-    clientNumber?: string
+    clientNumber: string,
+    additionalInfo?: string
   ) {
     try {
       //Contact Name
@@ -17,7 +18,11 @@ export default class SmsSendRepository extends SMS {
 
       const time = `${hour}:${minute === 0 ? "00" : "30"}`;
 
-      const ENDPOINT_ADDRESS = `${process.env.SERVER_ADDRESS}/confirm-reservation?date=${date}&time=${time}&people=${people}&clientNumber=${clientNumber}`;
+      const ENDPOINT_ADDRESS = `${
+        process.env.SERVER_ADDRESS
+      }/confirm-reservation?date=${date}&time=${time}&people=${people}&clientNumber=${clientNumber}${
+        additionalInfo ? "&additionalInfo=" + additionalInfo : ""
+      }`;
 
       const textInSMS = `${ENDPOINT_ADDRESS}`;
 

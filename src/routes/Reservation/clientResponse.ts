@@ -6,7 +6,7 @@ const router = express.Router();
 const convertIsConfirmedToBoolean = (isConfirmed: any) =>
   isConfirmed.toString() === "true" ? true : false;
 
-router.get("/", (req, res) => {
+router.get("/", (req) => {
   const smsSendRepository = new SmsSendRepository();
   const { isConfirmed, date, time, people, clientNumber } = req.query;
   const isConfirmedBoolean = convertIsConfirmedToBoolean(isConfirmed);
@@ -18,6 +18,5 @@ router.get("/", (req, res) => {
     isConfirmedBoolean,
     clientNumber as string
   );
-  res.send("<h1>Siema</h1>");
 });
 module.exports = router;
