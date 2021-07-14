@@ -10,6 +10,7 @@ export default class SmsSendRepository extends SMS {
     clientNumber: string,
     additionalInfo?: string
   ) {
+    console.log(RoPNumber, clientNumber, additionalInfo);
     try {
       //Contact Name
       const from = "Rezerwuj";
