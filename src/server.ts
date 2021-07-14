@@ -1,7 +1,7 @@
 import { APIURLS } from "./core/ImportantVariables/variables";
 
 import express from "express";
-const cors = require("cors")
+const cors = require("cors");
 const app = express();
 
 require("dotenv").config();
@@ -13,6 +13,9 @@ const PORT = process.env.PORT || 5000;
 app.use(express.static(__dirname + "/views"));
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
+
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 //Routes
 const getRestaurantsArray = require("./routes/Restaurant/getRestaurantsArray");
 const reservationHandler = require("./routes/Reservation/reservationHandler");
