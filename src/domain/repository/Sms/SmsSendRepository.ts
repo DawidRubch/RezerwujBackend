@@ -80,7 +80,7 @@ export default class SmsSendRepository extends SMS {
         }
       }
     };
-
+console.log(process.env.NEXMO_API)
     this.nexmo.message.sendSms(from, to, text, this.opts, sendSMSCallBack);
   };
 }
