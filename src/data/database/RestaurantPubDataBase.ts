@@ -124,7 +124,6 @@ export class RestaurantPubDb {
           month: bookTime.month,
           people: bookTime.people,
           year: bookTime.year,
-          name: bookTime.name,
           email,
           personName,
           surName,

@@ -1,4 +1,3 @@
-
 export class BookTime {
   minute: number;
   hour: number;
@@ -6,7 +5,6 @@ export class BookTime {
   day: number;
   month: number;
   people: number;
-  name: string;
 
   constructor(
     minute: number,
@@ -22,7 +20,6 @@ export class BookTime {
     this.month = month;
     this.year = year;
     this.people = people;
-    this.name = "";
   }
   toJson() {
     return {
@@ -32,7 +29,6 @@ export class BookTime {
       day: this.day,
       month: this.month,
       people: this.people,
-      name: this.name,
     };
   }
 }
