@@ -19,4 +19,4 @@ router.get("/", (req) => {
     clientNumber as string
   );
 });
-module.exports = router;
+export default router;

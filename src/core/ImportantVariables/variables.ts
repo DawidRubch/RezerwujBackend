@@ -23,4 +23,5 @@ export const APIURLS = {
   getRestaurantInfoConfirmPage: "/getRoPInfoConfirmPage",
   confirmReservation: "/confirm-reservation",
   clientResponse: "/client-response",
+  afterClickRoPOwnerResponse:"/afterClick"
 };

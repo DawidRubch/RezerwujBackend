@@ -19,5 +19,4 @@ router.post("/", async ({ body }, res) => {
   const { image } = RoP;
   res.send({ image, isFree: true });
 });
-
-module.exports = router;
+export default router;

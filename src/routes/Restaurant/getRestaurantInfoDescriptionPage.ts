@@ -45,4 +45,4 @@ router.post("/", async ({ body }: any, res: any) => {
   });
 });
 
-module.exports = router;
+export default router;

@@ -130,5 +130,4 @@ const isReservationFromPast = (bookTime: BookTime) => {
 
   return currentDate > dateFromBookTime;
 };
-
-module.exports = router;
+export default router;
