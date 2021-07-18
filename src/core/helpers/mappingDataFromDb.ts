@@ -9,10 +9,7 @@ import { RoPFromFirebase } from "../Interfaces/RoPFromFirebase";
 Function maps data from the database to the RestaurantOrPubArray
  */
 
-export function mappingDataFromDb(
-  data: RoPFromFirebase,
-  restaurantOrPubArr: RestaurantOrPub[]
-) {
+export function mappingDataFromDbToRoP(data: RoPFromFirebase) {
   const weekArray: Array<DayOfTheWeekOpenHours | null> = data.weekArray;
   const bookTimeArray: BookTime[] = data.bookTimeArray;
 

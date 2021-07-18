@@ -2,7 +2,7 @@ import db from "../../core/DbConfig/firebase";
 import admin from "firebase-admin";
 import { BookTime, RestaurantOrPub } from "../models";
 
-import { mappingDataFromDb } from "../../core/helpers/mappingDataFromDb";
+import { mappingDataFromDbToRoP } from "../../core/helpers/mappingDataFromDb";
 import { RoPFromFirebase } from "../../core/Interfaces/RoPFromFirebase";
 import { EnviromentType } from "../../core/Types/EnviromentType";
 import { FirebaseCollectionNames } from "../../core/Enums/FirebaseCollectionNames";
@@ -26,7 +26,9 @@ export class RestaurantPubDb {
     const { docs } = await db.collection(collection).get();
 
     for (const doc of docs) {
-      mappingDataFromDb(doc.data() as RoPFromFirebase, restaurantOrPubArr);
+      restaurantOrPubArr.push(
+        mappingDataFromDbToRoP(doc.data() as RoPFromFirebase)
+      );
     }
     return restaurantOrPubArr;
   }
@@ -40,19 +42,12 @@ export class RestaurantPubDb {
         ? FirebaseCollectionNames.RESTAURANTS_PROD
         : FirebaseCollectionNames.RESTAURANTS_TEST;
 
-    const restaurantOrPubArr: any[] = [];
     const snapshot = await db.collection(collection).doc(name).get();
 
     const snapshotData = snapshot.data();
     if (!snapshotData) return 0;
 
-    const dataInArray: RestaurantOrPub[] = mappingDataFromDb(
-      snapshotData as RoPFromFirebase,
-      restaurantOrPubArr
-    );
-    const data: RestaurantOrPub = dataInArray[0];
-
-    return data;
+    return mappingDataFromDbToRoP(snapshotData as RoPFromFirebase);
   }
 
   async saveReservationToDB(

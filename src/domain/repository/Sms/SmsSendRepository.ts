@@ -1,4 +1,5 @@
 import { MessageError } from "nexmo";
+import { generatingClientResponseText } from "../../../core/helpers/generatingClientResponseText";
 import PhoneNumberValidation from "../../../core/helpers/phoneNumberValidation";
 import { BookTime } from "../../../data/models";
 import SMS from "../../../data/superclasses/Sms";
@@ -44,11 +45,6 @@ export default class SmsSendRepository extends SMS {
     didRestaurantAgreed: boolean,
     clientPhoneNumber: string
   ) => {
-    const reservationInfoText = `Twoja rezerwacja na ${time},data ${date} dla ${people}.`;
-    const confirmResponseText = `${reservationInfoText}Została potwierdzona! Bardzo dziękujemy za korzystanie z naszego portalu!`;
-
-    const declineResponseText = `${reservationInfoText} Niestety została odrzucona.`;
-
     const isPhoneNumberLegit =
       PhoneNumberValidation.checkIfNumberIsLegit(clientPhoneNumber);
 
@@ -56,19 +52,20 @@ export default class SmsSendRepository extends SMS {
       const phoneNumberWithPolishAreaCode =
         PhoneNumberValidation.addPolishAreaCodeToNumber(clientPhoneNumber);
 
-      this.sendSMS(
-        didRestaurantAgreed ? confirmResponseText : declineResponseText,
-        phoneNumberWithPolishAreaCode,
-        "REZERWUJ"
+      const responseText = generatingClientResponseText(
+        didRestaurantAgreed,
+        date,
+        time,
+        people
       );
+      
+      this.sendSMS(responseText, phoneNumberWithPolishAreaCode, "REZERWUJ");
     }
   };
 
   sendSMS = (text: string, to: string, from: string) => {
     //Callback executed when SMS is sent
     const sendSMSCallBack = (err: MessageError, responseData: any) => {
-      //TODO
-      //Delete all logs here on prod
       if (err) {
         console.log(err);
       } else {

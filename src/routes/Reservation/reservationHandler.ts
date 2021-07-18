@@ -1,6 +1,6 @@
 import { RestaurantPubDb } from "../../data/database/RestaurantPubDataBase";
 import { BookTime } from "../../data/models";
-import { APIURLS } from "../../core/ImportantVariables/variables";
+import { APIURLS } from "../../core/ImportantVariables/ENDPOINT_NAMES";
 import { ReservationFindNextAvaliableJson } from "../../core/Interfaces";
 import SmsSendRepository from "../../domain/repository/Sms/SmsSendRepository";
 import express from "express";
@@ -30,8 +30,6 @@ router.post(APIURLS.reservation.save, async (req, res) => {
       bookTimeReq.year,
       bookTimeReq.people
     );
-
-    bookTime.name = bookTimeReq.name;
 
     const checkIfDateIsBeforeCurrentDate = isReservationFromPast(bookTime);
 
@@ -97,7 +95,6 @@ router.post(APIURLS.reservation.delete, async (req, res) => {
     bookTimeReq.people
   );
 
-  bookTime.name = bookTimeReq.name;
   await manageReservation(
     restaurantPubDb.deleteReservationFromDB(
       bookTime,
