@@ -76,7 +76,7 @@ export class RestaurantPubRepository {
    *
    *Every BookTime is added 30 minutes.
 
-   Returns 0 if 
+   Returns 0 if
    */
   generateAlternativeBookingHours(
     bookTime: BookTime,
@@ -84,18 +84,14 @@ export class RestaurantPubRepository {
   ): Array<null | BookTime | 0> | 0 {
     const alternativeBookingHoursArray: Array<null | BookTime | 0> = [];
     const restaurantBookTime: BookTime = new BookTime(
-      bookTime.minute,
-      bookTime.hour,
-      bookTime.day,
-      bookTime.month,
-      bookTime.year,
+      bookTime.date,
       bookTime.people
     );
     //Creating the date object
     const d: Date = new Date(
-      restaurantBookTime.year,
-      restaurantBookTime.month - 1,
-      restaurantBookTime.day
+      restaurantBookTime.date.year,
+      restaurantBookTime.date.month - 1,
+      restaurantBookTime.date.day
     );
     //Checking which day of the week it is
     const dayOfTheWeek: number = d.getDay();
@@ -141,33 +137,26 @@ function checkIfBookTimeViable(
   { closingHour, openHour, closingMinute }: DayOfTheWeekOpenHours
 ) {
   //If minutes are equal to 60 changes to next hour
-  if (restaurantBookTime.minute === 60) {
-    restaurantBookTime.hour += 1;
-    restaurantBookTime.minute = 0;
+  if (restaurantBookTime.date.minute === 60) {
+    restaurantBookTime.date.hour += 1;
+    restaurantBookTime.date.minute = 0;
   }
   //Checks if the place is closed
   if (
-    restaurantBookTime.hour > closingHour ||
-    restaurantBookTime.hour < openHour
+    restaurantBookTime.date.hour > closingHour ||
+    restaurantBookTime.date.hour < openHour
   ) {
     alternativeBookingHoursArray.push(0);
   } //Also checks for if the place is closed but in the same hour
   else if (
-    restaurantBookTime.hour === closingHour &&
-    restaurantBookTime.minute > closingMinute
+    restaurantBookTime.date.hour === closingHour &&
+    restaurantBookTime.date.minute > closingMinute
   ) {
     alternativeBookingHoursArray.push(0);
   } else {
     alternativeBookingHoursArray.push(
-      new BookTime(
-        restaurantBookTime.minute,
-        restaurantBookTime.hour,
-        restaurantBookTime.day,
-        restaurantBookTime.month,
-        restaurantBookTime.year,
-        restaurantBookTime.people
-      )
+      new BookTime(restaurantBookTime.date, restaurantBookTime.people)
     );
   }
-  restaurantBookTime.minute += 30;
+  restaurantBookTime.date.minute += 30;
 }

@@ -107,24 +107,8 @@ export function fromJson({
 
   return restaurantOrPubEntity;
 }
-function mapBookTime({
-  minute,
-  hour,
-  day,
-  month,
-  year,
-  people,
-  name,
-}: BookTime) {
-  const restaurantBookTime = new BookTime(
-    minute,
-    hour,
-    day,
-    month,
-    year,
-    people
-  );
-  restaurantBookTime.name = name;
+function mapBookTime({ date, people }: BookTime) {
+  const restaurantBookTime = new BookTime(date, people);
   return restaurantBookTime;
 }
 
@@ -152,7 +136,7 @@ function mapAlternativeBookingHours(bookTimeOrNull: BookTime | null | 0) {
   }
 
   //Descructing bookTime object
-  const { minute, hour, day, month, year, people } = bookTimeOrNull;
+  const { date, people } = bookTimeOrNull;
 
-  return new BookTime(minute, hour, day, month, year, people);
+  return new BookTime(date, people);
 }
