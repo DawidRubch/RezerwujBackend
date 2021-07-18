@@ -9,14 +9,14 @@ const router = express.Router();
 router.post("/", async ({ body }: any, res: any) => {
   const restaurantOrPubDb = new RestaurantPubDb();
   const restaurantPubRepository = new RestaurantPubRepository();
-  const bookTimeFromDb = new BookTime(
-    body.bookTime.minute,
-    body.bookTime.hour,
-    body.bookTime.day,
-    body.bookTime.month,
-    body.bookTime.year,
-    body.bookTime.people
-  );
+  const dateObj = {
+    minute: body.bookTime.minute,
+    hour: body.bookTime.hour,
+    day: body.bookTime.day,
+    month: body.bookTime.month,
+    year: body.bookTime.year,
+  };
+  const bookTimeFromDb = new BookTime(dateObj, body.bookTime.people);
 
   const RoP = await restaurantOrPubDb.getRestaurantOrPubByNameFromDb(body.name);
 

@@ -23,16 +23,15 @@ router.post(APIURLS.reservation.save, async (req, res) => {
   try {
     const bookTimeReq = reqBody.bookTime;
 
-    const bookTime: BookTime = new BookTime(
-      bookTimeReq.minute,
-      bookTimeReq.hour,
-      bookTimeReq.day,
-      bookTimeReq.month,
-      bookTimeReq.year,
-      bookTimeReq.people
-    );
+    const dateObj = {
+      minute: bookTimeReq.minute,
+      hour: bookTimeReq.hour,
+      day: bookTimeReq.day,
+      month: bookTimeReq.year,
+      year: bookTimeReq.year,
+    };
 
-    bookTime.name = bookTimeReq.name;
+    const bookTime: BookTime = new BookTime(dateObj, bookTimeReq.people);
 
     const checkIfDateIsBeforeCurrentDate = isReservationFromPast(bookTime);
 
@@ -84,16 +83,16 @@ router.post(APIURLS.reservation.delete, async (req, res) => {
   const restaurantPubDb: RestaurantPubDb = new RestaurantPubDb();
 
   const bookTimeReq = reqBody.bookTime;
-  const bookTime = new BookTime(
-    bookTimeReq.minute,
-    bookTimeReq.hour,
-    bookTimeReq.day,
-    bookTimeReq.month,
-    bookTimeReq.year,
-    bookTimeReq.people
-  );
+  const dateObj = {
+    minute: bookTimeReq.minute,
+    hour: bookTimeReq.hour,
+    day: bookTimeReq.day,
+    month: bookTimeReq.year,
+    year: bookTimeReq.year,
+  };
 
-  bookTime.name = bookTimeReq.name;
+  const bookTime = new BookTime(dateObj, bookTimeReq.people);
+
   await manageReservation(
     restaurantPubDb.deleteReservationFromDB(bookTime, reqBody.name, res)
   )
@@ -115,11 +114,11 @@ const isReservationFromPast = (bookTime: BookTime) => {
 
   const dateFromBookTime = new Date();
 
-  dateFromBookTime.setDate(bookTime.day);
-  dateFromBookTime.setMonth(bookTime.month);
-  dateFromBookTime.setMinutes(bookTime.minute);
-  dateFromBookTime.setHours(bookTime.hour);
-  dateFromBookTime.setFullYear(bookTime.year);
+  dateFromBookTime.setDate(bookTime.date.day);
+  dateFromBookTime.setMonth(bookTime.date.month);
+  dateFromBookTime.setMinutes(bookTime.date.minute);
+  dateFromBookTime.setHours(bookTime.date.hour);
+  dateFromBookTime.setFullYear(bookTime.date.year);
 
   return currentDate > dateFromBookTime;
 };
