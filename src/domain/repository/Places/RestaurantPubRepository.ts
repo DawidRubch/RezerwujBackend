@@ -2,68 +2,18 @@ import {
   BookTime,
   RestaurantOrPub,
   DayOfTheWeekOpenHours,
-  ROPLocation,
 } from "../../../data/models";
 
-import { RestaurantPubDb } from "../../../data/database/RestaurantPubDataBase";
-import {
-  calculateDistance,
-  checkIfAddressIsInRange,
-} from "../../../core/helpers/checkIfAddressIsInRange";
-import { sortByClosestDistance } from "../../../core/SortingFunctions/sortByClosestDistance";
-import { EnviromentType } from "../../../core/Types/EnviromentType";
+import RestaurantPubDb from "../../../data/database/RestaurantPubDataBase";
+import { EnviromentType } from "../../../core/TypeScript";
 
-export class RestaurantPubRepository {
-  restaurantOrPubDb = new RestaurantPubDb();
-  /**
-    Function generates the array of all of the restaurants in certain radius.
- */
-  async generateArrayOfRestaurantsInRadius(
-    searchingAddress: ROPLocation,
-    enviromentType: EnviromentType,
-    bookTime: BookTime
-  ) {
-    const placesArr: RestaurantOrPub[] = [];
-    //Array of places taken from DB
-    const RestaurantOrPubsArray = await this.restaurantOrPubDb.getAllDocuments(
-      enviromentType
-    );
-
-    //Looping over places
-    for (const restaurantOrPub of RestaurantOrPubsArray) {
-      //Desctructing variables from restaurantOrPub entity
-      let { distance } = restaurantOrPub;
-      const { location } = restaurantOrPub;
-
-      //Checks if restaurantis in range
-      const isPlaceInRange = checkIfAddressIsInRange(
-        searchingAddress,
-        location
-      );
-
-      if (isPlaceInRange) {
-        //Calculates the distance beetween adress and location
-        distance = calculateDistance(searchingAddress, location);
-
-        //Returns alternative booking array for BookTime
-        const alternativeBookingHoursOr0 = this.generateAlternativeBookingHours(
-          bookTime,
-          restaurantOrPub
-        );
-
-        restaurantOrPub.alternativeBookingHours = alternativeBookingHoursOr0;
-        placesArr.push(restaurantOrPub);
-      }
-    }
-    return sortByClosestDistance(placesArr);
-  }
-
+class RestaurantPubRepository {
   generateArrayOfRestaurantsFromCertainCity = async (
     bookTime: BookTime,
-    enviromentType: EnviromentType
+    enviromentType?: EnviromentType
   ) => {
     //Array of places taken from DB
-    const RestaurantOrPubsArray = await this.restaurantOrPubDb.getAllDocuments(
+    const RestaurantOrPubsArray = await RestaurantPubDb.getAllDocuments(
       enviromentType
     );
 
@@ -82,8 +32,6 @@ export class RestaurantPubRepository {
    *The function generates 6 alternative reservation times for a person.
    *
    *Every BookTime is added 30 minutes.
-
-   Returns 0 if 
    */
   generateAlternativeBookingHours(
     bookTime: BookTime,
@@ -114,7 +62,7 @@ export class RestaurantPubRepository {
     if (dayOpeningHours === null) {
       return [];
     }
-    for (var i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i++) {
       checkIfBookTimeViable(
         alternativeBookingHoursArray,
         restaurantBookTime,
@@ -178,3 +126,5 @@ function checkIfBookTimeViable(
   }
   restaurantBookTime.minute += 30;
 }
+
+export default new RestaurantPubRepository();

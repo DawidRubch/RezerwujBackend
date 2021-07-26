@@ -1,23 +1,24 @@
 import express from "express";
+import { GetRestaurantInfoConfirmPageInterface } from "../../core/TypeScript";
 
-import { RestaurantPubDb } from "../../data/database/RestaurantPubDataBase";
+import { getRoP } from "../../services/RoP/getRoP";
 
 const router = express.Router();
 
-router.post("/", async ({ body }, res) => {
-  const restaurantOrPubDb = new RestaurantPubDb();
-  const RoP = await restaurantOrPubDb.getRestaurantOrPubByNameFromDb(
-    body.name,
-    body.enviromentType
-  );
+const routerCb = async (
+  { body }: GetRestaurantInfoConfirmPageInterface,
+  res: any
+) => {
+  const { name, enviromentType } = body;
+  const RoP = await getRoP(name, res, enviromentType);
 
-  if (typeof RoP === "number") {
-    res.sendStatus(404);
-    return;
-  }
+  if (RoP === null) return;
 
   const { image } = RoP;
-  res.send({ image, isFree: true });
-});
 
-module.exports = router;
+  res.send({ image, isFree: true });
+};
+
+router.post("/", routerCb);
+
+export default router;

@@ -1,43 +1,48 @@
-import { APIURLS } from "./core/ImportantVariables/variables";
-
+//External variables/modules imports
+import { APIURLS } from "./core/ImportantVariables/ENDPOINT_NAMES";
 import express from "express";
-const cors = require("cors");
-const app = express();
-
 require("dotenv").config();
+const cors = require("cors");
 
-app.use(cors());
-
-app.use(express.json());
+//Initialize variables
+const app = express();
 const PORT = process.env.PORT || 5000;
+
+//Config
+app.use(cors());
+app.use(express.json());
 app.use(express.static(__dirname + "/views"));
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
-const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, ".env") });
-//Routes
-const getRestaurantsArray = require("./routes/Restaurant/getRestaurantsArray");
-const reservationHandler = require("./routes/Reservation/reservationHandler");
-const getRestaurantInfoDescriptionPage = require("./routes/Restaurant/getRestaurantInfoDescriptionPage");
-const getRestaurantInfoConfirmPage = require("./routes/Restaurant/getRestaurantInfoConfirmPage");
-const getRoPAlternativeBookingHours = require("./routes/Restaurant/getRoPAlternativeBookingHours");
-const confirmReservation = require("./routes/Reservation/confirmReservation");
-const clientResponse = require("./routes/Reservation/clientResponse");
+//Routes import
+import getRestaurantsArrayRouter from "./routes/Restaurant/getRestaurantsArray";
+import reservationHandlerRouter from "./routes/Reservation/reservationHandler";
+import getRestaurantInfoDescriptionPageRouter from "./routes/Restaurant/getRestaurantInfoDescriptionPage";
+import getRestaurantInfoConfirmPageRouter from "./routes/Restaurant/getRestaurantInfoConfirmPage";
+import getRoPAlternativeBookingHoursRouter from "./routes/Restaurant/getRoPAlternativeBookingHours";
+import confirmReservationRouter from "./routes/Reservation/confirmReservation";
+import clientResponseRouter from "./routes/Reservation/clientResponse";
+import afterClickRouter from "./routes/Reservation/afterClick";
 
-app.get("/afterClick", (req, res) => {
-  res.render("AfterClick");
-});
-app.use(APIURLS.getRestaurants, getRestaurantsArray);
-app.use(APIURLS.reservation.reservation, reservationHandler);
-app.use(APIURLS.confirmReservation, confirmReservation);
-app.use(APIURLS.clientResponse, clientResponse);
+//Routers using
+app.use(APIURLS.afterClickRoPOwnerResponse, afterClickRouter);
+app.use(APIURLS.getRestaurants, getRestaurantsArrayRouter);
+app.use(APIURLS.reservation.reservation, reservationHandlerRouter);
+app.use(APIURLS.confirmReservation, confirmReservationRouter);
+app.use(APIURLS.clientResponse, clientResponseRouter);
 app.use(
   APIURLS.getRestaurantInfoDescriptionPage,
-  getRestaurantInfoDescriptionPage
+  getRestaurantInfoDescriptionPageRouter
 );
-app.use(APIURLS.getRestaurantInfoConfirmPage, getRestaurantInfoConfirmPage);
-app.use(APIURLS.getRoPAlternativeBookingHours, getRoPAlternativeBookingHours);
+app.use(
+  APIURLS.getRestaurantInfoConfirmPage,
+  getRestaurantInfoConfirmPageRouter
+);
+app.use(
+  APIURLS.getRoPAlternativeBookingHours,
+  getRoPAlternativeBookingHoursRouter
+);
 
 //Server Listening
 app.listen(PORT, () => {

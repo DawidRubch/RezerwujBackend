@@ -1,3 +1,4 @@
+import { BookTimeJson } from "../../core/TypeScript";
 
 export class BookTime {
   minute: number;
@@ -6,7 +7,6 @@ export class BookTime {
   day: number;
   month: number;
   people: number;
-  name: string;
 
   constructor(
     minute: number,
@@ -22,7 +22,6 @@ export class BookTime {
     this.month = month;
     this.year = year;
     this.people = people;
-    this.name = "";
   }
   toJson() {
     return {
@@ -32,7 +31,16 @@ export class BookTime {
       day: this.day,
       month: this.month,
       people: this.people,
-      name: this.name,
     };
   }
 }
+
+
+export const bookTimeFromJson = ({
+  minute,
+  hour,
+  year,
+  day,
+  month,
+  people,
+}: BookTimeJson) => new BookTime(minute, hour, day, month, year, people);

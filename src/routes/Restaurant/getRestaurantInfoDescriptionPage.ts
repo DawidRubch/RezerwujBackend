@@ -1,48 +1,40 @@
 import express from "express";
+import { GetRestaurantInfoDescriptionInterface } from "../../core/TypeScript";
 
-import { RestaurantPubDb } from "../../data/database/RestaurantPubDataBase";
-import { BookTime } from "../../data/models";
-import { RestaurantPubRepository } from "../../domain/repository/Places/RestaurantPubRepository";
+import { bookTimeFromJson } from "../../data/models";
+import RestaurantPubRepository from "../../domain/repository/Places/RestaurantPubRepository";
+import { getRoP } from "../../services/RoP/getRoP";
 
 const router = express.Router();
 
-router.post("/", async ({ body }: any, res: any) => {
-  const restaurantOrPubDb = new RestaurantPubDb();
-  const restaurantPubRepository = new RestaurantPubRepository();
-  const bookTimeFromDb = new BookTime(
-    body.bookTime.minute,
-    body.bookTime.hour,
-    body.bookTime.day,
-    body.bookTime.month,
-    body.bookTime.year,
-    body.bookTime.people
-  );
+router.post(
+  "/",
+  async ({ body }: GetRestaurantInfoDescriptionInterface, res: any) => {
+    const { bookTime, enviromentType, name } = body;
 
-  const RoP = await restaurantOrPubDb.getRestaurantOrPubByNameFromDb(
-    body.name,
-    body.enviromentType
-  );
+    const bookTimeFromDb = bookTimeFromJson(bookTime);
 
-  if (typeof RoP === "number") {
-    return res.status(400).send("Restauracja o podanej nazwie nie istnieje!");
+    const RoP = await getRoP(name, res, enviromentType);
+    if (RoP === null) return;
+
+    const alternativeBookingHours =
+      RestaurantPubRepository.generateAlternativeBookingHours(
+        bookTimeFromDb,
+        RoP
+      );
+
+    const { descriptionPageImg, type, tags, shortDescription, menuLink } = RoP;
+
+    res.send({
+      descriptionPageImg,
+      name: RoP.name,
+      type,
+      tags,
+      shortDescription,
+      menuLink,
+      alternativeBookingHours,
+    });
   }
-  const alternativeBookingHours =
-    restaurantPubRepository.generateAlternativeBookingHours(
-      bookTimeFromDb,
-      RoP
-    );
-  const { descriptionPageImg, name, type, tags, shortDescription, menuLink } =
-    RoP;
+);
 
-  res.send({
-    descriptionPageImg,
-    name,
-    type,
-    tags,
-    shortDescription,
-    menuLink,
-    alternativeBookingHours,
-  });
-});
-
-module.exports = router;
+export default router;

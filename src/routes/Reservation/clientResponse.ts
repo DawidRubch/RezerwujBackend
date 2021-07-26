@@ -7,11 +7,11 @@ const convertIsConfirmedToBoolean = (isConfirmed: any) =>
   isConfirmed.toString() === "true" ? true : false;
 
 router.get("/", (req) => {
-  const smsSendRepository = new SmsSendRepository();
+
   const { isConfirmed, date, time, people, clientNumber } = req.query;
   const isConfirmedBoolean = convertIsConfirmedToBoolean(isConfirmed);
 
-  smsSendRepository.sendRespondToClient(
+  SmsSendRepository.sendRespondToClient(
     date as string,
     time as string,
     people as string,
@@ -19,4 +19,4 @@ router.get("/", (req) => {
     clientNumber as string
   );
 });
-module.exports = router;
+export default router;
