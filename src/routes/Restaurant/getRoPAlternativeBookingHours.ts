@@ -1,9 +1,9 @@
-import { EnviromentType } from "../../core/Types/EnviromentType";
-import { RestaurantPubDb } from "../../data/database/RestaurantPubDataBase";
 import { BookTime } from "../../data/models";
-import { RestaurantPubRepository } from "../../domain/repository/Places/RestaurantPubRepository";
+import RestaurantPubRepository from "../../domain/repository/Places/RestaurantPubRepository";
 
-const express = require("express");
+import express from "express";
+import { getRoP } from "../../services/RoP/getRoP";
+import { EnviromentType } from "../../core/TypeScript";
 const router = express.Router();
 
 interface GetRoPAlternativeBookingHoursReq {
@@ -20,25 +20,15 @@ router.post(
     {
       body: { bookTime, name, enviromentType },
     }: GetRoPAlternativeBookingHoursReq,
-    res: any
+    res
   ) => {
-    const restaurantPubRepository = new RestaurantPubRepository();
-
-    const restaurantPubDb = new RestaurantPubDb();
-
     //Getting restaurant or pub from array
-    const roP = await restaurantPubDb.getRestaurantOrPubByNameFromDb(
-      name,
-      enviromentType
-    );
+    const RoP = await getRoP(name, res, enviromentType);
 
-    if (typeof roP === "number") {
-      res.sendStatus(404);
-      return;
-    }
+    if (RoP === null) return;
 
     const alternativeBookingHours =
-      restaurantPubRepository.generateAlternativeBookingHours(bookTime, roP);
+      RestaurantPubRepository.generateAlternativeBookingHours(bookTime, RoP);
 
     res.send(alternativeBookingHours);
   }

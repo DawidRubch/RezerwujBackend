@@ -1,3 +1,5 @@
+import { BookTimeJson } from "../../core/TypeScript";
+
 export class BookTime {
   minute: number;
   hour: number;
@@ -32,3 +34,13 @@ export class BookTime {
     };
   }
 }
+
+
+export const bookTimeFromJson = ({
+  minute,
+  hour,
+  year,
+  day,
+  month,
+  people,
+}: BookTimeJson) => new BookTime(minute, hour, day, month, year, people);

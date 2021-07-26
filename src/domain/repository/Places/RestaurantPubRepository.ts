@@ -4,19 +4,16 @@ import {
   DayOfTheWeekOpenHours,
 } from "../../../data/models";
 
-import { RestaurantPubDb } from "../../../data/database/RestaurantPubDataBase";
+import RestaurantPubDb from "../../../data/database/RestaurantPubDataBase";
+import { EnviromentType } from "../../../core/TypeScript";
 
-import { EnviromentType } from "../../../core/Types/EnviromentType";
-
-export class RestaurantPubRepository {
-  restaurantOrPubDb = new RestaurantPubDb();
-
+class RestaurantPubRepository {
   generateArrayOfRestaurantsFromCertainCity = async (
     bookTime: BookTime,
-    enviromentType: EnviromentType
+    enviromentType?: EnviromentType
   ) => {
     //Array of places taken from DB
-    const RestaurantOrPubsArray = await this.restaurantOrPubDb.getAllDocuments(
+    const RestaurantOrPubsArray = await RestaurantPubDb.getAllDocuments(
       enviromentType
     );
 
@@ -35,8 +32,6 @@ export class RestaurantPubRepository {
    *The function generates 6 alternative reservation times for a person.
    *
    *Every BookTime is added 30 minutes.
-
-   Returns 0 if 
    */
   generateAlternativeBookingHours(
     bookTime: BookTime,
@@ -67,7 +62,7 @@ export class RestaurantPubRepository {
     if (dayOpeningHours === null) {
       return [];
     }
-    for (var i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i++) {
       checkIfBookTimeViable(
         alternativeBookingHoursArray,
         restaurantBookTime,
@@ -131,3 +126,5 @@ function checkIfBookTimeViable(
   }
   restaurantBookTime.minute += 30;
 }
+
+export default new RestaurantPubRepository();

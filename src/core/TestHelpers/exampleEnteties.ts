@@ -3,7 +3,7 @@ import {
   DayOfTheWeekOpenHours,
   RestaurantOrPub,
 } from "../../data/models/";
-import { RestaurantPubRepository } from "../../domain/repository/Places/RestaurantPubRepository";
+import RestaurantPubRepository from "../../domain/repository/Places/RestaurantPubRepository";
 const weekArray = [
   null,
   new DayOfTheWeekOpenHours(10, 0, 22, 0),
@@ -80,8 +80,6 @@ export const tRestaurantCeglanaSzczecin = new RestaurantOrPub(
   "descriptionPageImg",
   weekArray
 );
-
-export const tRestaurantPubRepository = new RestaurantPubRepository();
 
 export const tAlternativeBookTimeArray = [
   //10:30 25 lis 2020 5 osob

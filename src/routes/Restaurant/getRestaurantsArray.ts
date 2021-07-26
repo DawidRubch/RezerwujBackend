@@ -1,54 +1,34 @@
 import express from "express";
-import { BookTime, RestaurantOrPub } from "../../data/models/";
-import { RestaurantPubRepository } from "../../domain/repository/Places/RestaurantPubRepository";
-import { GetRestaurantsJson } from "../../core/Interfaces";
+import { GetRestaurantsJson } from "../../core/TypeScript";
+import { bookTimeFromJson, RestaurantOrPub } from "../../data/models/";
+import RestaurantPubRepository from "../../domain/repository/Places/RestaurantPubRepository";
 
 const router = express.Router();
 
 router.post(
   "/",
-  async (
-    {
-      body: {
-        bookTime: { hour, day, month, year, people, minute },
-        enviromentType,
-      },
-    }: GetRestaurantsJson,
-    res
-  ) => {
-    if (
-      !(
-        hour.toString() &&
-        day.toString() &&
-        month.toString() &&
-        year.toString() &&
-        people.toString()
-      )
-    ) {
-      res.send("Nie uzupelniłeś jakiejś informacji.");
-      return;
-    } else if (!minute) {
-      minute = 0;
-    }
-
-    const bookTime = new BookTime(minute, hour, day, month, year, people);
+  async ({ body: { bookTime, enviromentType } }: GetRestaurantsJson, res) => {
+    const bookTimeFromJs = bookTimeFromJson(bookTime);
 
     try {
-      const restaurantPubRepository = new RestaurantPubRepository();
-
-      restaurantPubRepository
-        .generateArrayOfRestaurantsFromCertainCity(bookTime, enviromentType)
-        .then((value: RestaurantOrPub[]) => {
-          if (!value) {
-            res.sendStatus(404);
-          } else {
-            res.send(value);
-          }
-        });
+      RestaurantPubRepository.generateArrayOfRestaurantsFromCertainCity(
+        bookTimeFromJs,
+        enviromentType
+      ).then((value: RestaurantOrPub[]) =>
+        sendStatusBasedOnResFromDb(value, res)
+      );
     } catch (err) {
       console.log(err);
     }
   }
 );
+
+const sendStatusBasedOnResFromDb = (value: RestaurantOrPub[], res: any) => {
+  if (!value) {
+    res.sendStatus(404);
+    return;
+  }
+  res.send(value);
+};
 
 export default router;

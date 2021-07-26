@@ -3,18 +3,21 @@ import admin from "firebase-admin";
 import { BookTime, RestaurantOrPub } from "../models";
 
 import { mappingDataFromDbToRoP } from "../../core/helpers/mappingDataFromDb";
-import { RoPFromFirebase } from "../../core/Interfaces/RoPFromFirebase";
-import { EnviromentType } from "../../core/Types/EnviromentType";
-import { FirebaseCollectionNames } from "../../core/Enums/FirebaseCollectionNames";
+import {
+  EnviromentType,
+  FirebaseCollectionNames,
+  ReservationJson,
+  RoPFromFirebase,
+} from "../../core/TypeScript";
 
 /**
  Class with diffrent functions to map the data from the database.
  */
-export class RestaurantPubDb {
+class RestaurantPubDb {
   //Collection name in firestore database
 
   async getAllDocuments(
-    enviromentType: EnviromentType
+    enviromentType?: EnviromentType
   ): Promise<RestaurantOrPub[]> {
     const restaurantOrPubArr: RestaurantOrPub[] = [];
 
@@ -35,7 +38,7 @@ export class RestaurantPubDb {
 
   async getRestaurantOrPubByNameFromDb(
     name: string,
-    enviromentType: EnviromentType
+    enviromentType?: EnviromentType
   ) {
     const collection =
       enviromentType == "prod"
@@ -52,20 +55,22 @@ export class RestaurantPubDb {
 
   async saveReservationToDB(
     bookTime: BookTime,
-    enviromentType: EnviromentType,
-    restaurantName: string,
-    res: any,
-    email?: string,
-    personName?: string,
-    surName?: string,
-    number?: string
+    {
+      enviromentType,
+      name,
+      email,
+      personName,
+      surName,
+      number,
+    }: ReservationJson,
+    res: any
   ) {
     await this.manageReservationsFromDb(
       bookTime,
-      enviromentType,
       admin.firestore.FieldValue.arrayUnion,
-      restaurantName,
+      name,
       res,
+      enviromentType,
       email,
       personName,
       surName,
@@ -73,28 +78,12 @@ export class RestaurantPubDb {
     );
   }
 
-  async deleteReservationFromDB(
-    bookTime: BookTime,
-    enviromentType: EnviromentType,
-    restaurantName: string,
-    res: any
-  ) {
-    await this.manageReservationsFromDb(
-      bookTime,
-      enviromentType,
-      admin.firestore.FieldValue.arrayRemove,
-      restaurantName,
-      res
-    );
-  }
-
   async manageReservationsFromDb(
     bookTime: BookTime,
-    enviromentType: EnviromentType,
     arrayAddOrRemove: (...elements: any) => FirebaseFirestore.FieldValue,
     restaurantName: string,
     res: any,
-
+    enviromentType?: EnviromentType,
     email?: string,
     personName?: string,
     surName?: string,
@@ -136,3 +125,5 @@ export class RestaurantPubDb {
     });
   }
 }
+
+export default new RestaurantPubDb();

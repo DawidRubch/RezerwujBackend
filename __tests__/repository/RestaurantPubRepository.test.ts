@@ -5,10 +5,8 @@ import {
   tRestaurantCeglanaSzczecin,
   tAlternativeBookTimeArray,
   tAlternativeBookTimeArrayWith2Zeros,
-  tAlternativeBookTimeArrayWith2NullFront,
-  tRestaurantPubRepository,
-  tFullBookedArray,
 } from "../../src/core/TestHelpers/exampleEnteties";
+import RestaurantPubRepository from "../../src/domain/repository/Places/RestaurantPubRepository";
 
 describe("RestaurantPubRepository", () => {
   describe("generateAlternativeBookingHours", () => {
@@ -16,7 +14,7 @@ describe("RestaurantPubRepository", () => {
       //10:30 25 lis 2020 5 osób
       let tBookTime = new BookTime(30, 10, 25, 11, 2020, 5);
       expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
+        RestaurantPubRepository.generateAlternativeBookingHours(
           tBookTime,
           tRestaurantCeglanaSzczecin
         )
@@ -33,7 +31,7 @@ describe("RestaurantPubRepository", () => {
       //10:30 25 lis 2020 5 osób
       let tBookTime = new BookTime(30, 10, 25, 11, 2020, 5);
       expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
+        RestaurantPubRepository.generateAlternativeBookingHours(
           tBookTime,
           tRestaurantCeglanaSzczecin
         )
@@ -44,7 +42,7 @@ describe("RestaurantPubRepository", () => {
       //20:30 25 lis 2020 5 osób
       let tBookTime = new BookTime(30, 20, 25, 11, 2020, 5);
       expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
+        RestaurantPubRepository.generateAlternativeBookingHours(
           tBookTime,
           tRestaurantCeglanaSzczecin
         )
@@ -56,7 +54,7 @@ describe("RestaurantPubRepository", () => {
       let tBookTime = new BookTime(30, 15, 8, 11, 2020, 25);
       tRestaurantCeglanaSzczecin.bookTimeArray = tBookTimeArray;
       expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
+        RestaurantPubRepository.generateAlternativeBookingHours(
           tBookTime,
           tRestaurantCeglanaSzczecin
         )
@@ -68,7 +66,7 @@ describe("RestaurantPubRepository", () => {
       let tBookTime = new BookTime(30, 22, 9, 11, 2020, 25);
       tRestaurantCeglanaSzczecin.bookTimeArray = tBookTimeArray;
       expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
+        RestaurantPubRepository.generateAlternativeBookingHours(
           tBookTime,
           tRestaurantCeglanaSzczecin
         )
