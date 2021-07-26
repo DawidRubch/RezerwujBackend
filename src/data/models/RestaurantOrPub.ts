@@ -1,13 +1,12 @@
 import { BookTime } from "./BookTime";
 import { DayOfTheWeekOpenHours } from "./DayOfTheWeek";
-import { ROPLocation } from "./Location";
 
 export class RestaurantOrPub {
   name: string;
   type: string;
   tags: string[];
   shortDescription: string;
-  location: ROPLocation;
+
   distance: number;
   ownerNumber: string;
   chairs: number;
@@ -24,7 +23,7 @@ export class RestaurantOrPub {
     //Tags such as 'miła atmosfera' or "dużo opcji wegetariańskich"
     tags: string[],
     shortDescription: string,
-    location: ROPLocation,
+
     ownerNumber: string,
     //Distance is -1 by default
     chairs: number,
@@ -47,7 +46,7 @@ export class RestaurantOrPub {
     this.shortDescription = shortDescription;
     this.ownerNumber = ownerNumber;
     this.distance = -1;
-    this.location = location;
+
     this.chairs = chairs;
     this.menuLink = menuLink;
     this.bookTimeArray = bookTimeArray;
@@ -58,7 +57,6 @@ export class RestaurantOrPub {
 }
 //Napisać testy pod t
 export function fromJson({
-  location,
   weekArray,
   bookTimeArray,
   name,
@@ -73,10 +71,6 @@ export function fromJson({
   alternativeBookingHours,
   distance,
 }: RestaurantOrPub): RestaurantOrPub {
-  const locationToReturn: ROPLocation = new ROPLocation(
-    location.lat,
-    location.long
-  );
   const weekArrayToReturn: Array<DayOfTheWeekOpenHours | null> =
     weekArray.map(mapWeekDay);
   const bookTimeArrayToReturn: BookTime[] = bookTimeArray.map(mapBookTime);
@@ -85,7 +79,7 @@ export function fromJson({
     type,
     tags,
     shortDescription,
-    locationToReturn,
+
     ownerNumber,
     chairs,
     menuLink,
@@ -107,15 +101,7 @@ export function fromJson({
 
   return restaurantOrPubEntity;
 }
-function mapBookTime({
-  minute,
-  hour,
-  day,
-  month,
-  year,
-  people,
-  name,
-}: BookTime) {
+function mapBookTime({ minute, hour, day, month, year, people }: BookTime) {
   const restaurantBookTime = new BookTime(
     minute,
     hour,
@@ -124,7 +110,7 @@ function mapBookTime({
     year,
     people
   );
-  restaurantBookTime.name = name;
+
   return restaurantBookTime;
 }
 

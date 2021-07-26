@@ -2,9 +2,8 @@ import {
   BookTime,
   DayOfTheWeekOpenHours,
   RestaurantOrPub,
-  ROPLocation,
 } from "../../data/models/";
-import { RestaurantPubRepository } from "../../domain/repository/Places/RestaurantPubRepository";
+import RestaurantPubRepository from "../../domain/repository/Places/RestaurantPubRepository";
 const weekArray = [
   null,
   new DayOfTheWeekOpenHours(10, 0, 22, 0),
@@ -73,7 +72,7 @@ export const tRestaurantCeglanaSzczecin = new RestaurantOrPub(
   "włoska",
   ["mila"],
   "Siema jestem adam",
-  new ROPLocation(53.4188333, 14.5486917),
+  "535480759",
   30,
   "youtube.com",
   tBookTimeArray,
@@ -81,8 +80,6 @@ export const tRestaurantCeglanaSzczecin = new RestaurantOrPub(
   "descriptionPageImg",
   weekArray
 );
-
-export const tRestaurantPubRepository = new RestaurantPubRepository();
 
 export const tAlternativeBookTimeArray = [
   //10:30 25 lis 2020 5 osob
@@ -183,17 +180,13 @@ export const bookTimeArraySorted = [
 //Plac rodla - Ceglana around 1.49 km
 //Plac rodla - Ładoga around 1.05 km
 //Plac Rodła - Urząd Gminy Police around 13.24 km
-export const locationOfPlacRodlaSzczecin: ROPLocation = new ROPLocation(
-  53.4321142,
-  14.5553889
-);
 
 const tRestaurantŁadogaSzczecin = new RestaurantOrPub(
   "Ładoga",
   "rosyjska",
   [],
   "",
-  new ROPLocation(53.4246251, 14.565829),
+  "535480759",
   30,
   "",
   [],
@@ -206,7 +199,7 @@ const urządGminyPoliceSzczecin = new RestaurantOrPub(
   "",
   [],
   "",
-  new ROPLocation(53.5507706, 14.5661836),
+  "535480759",
   30,
   "",
   [],

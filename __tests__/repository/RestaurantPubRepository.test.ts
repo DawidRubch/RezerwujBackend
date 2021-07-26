@@ -5,10 +5,8 @@ import {
   tRestaurantCeglanaSzczecin,
   tAlternativeBookTimeArray,
   tAlternativeBookTimeArrayWith2Zeros,
-  tAlternativeBookTimeArrayWith2NullFront,
-  tRestaurantPubRepository,
-  tFullBookedArray,
 } from "../../src/core/TestHelpers/exampleEnteties";
+import RestaurantPubRepository from "../../src/domain/repository/Places/RestaurantPubRepository";
 
 describe("RestaurantPubRepository", () => {
   describe("generateAlternativeBookingHours", () => {
@@ -16,7 +14,7 @@ describe("RestaurantPubRepository", () => {
       //10:30 25 lis 2020 5 osób
       let tBookTime = new BookTime(30, 10, 25, 11, 2020, 5);
       expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
+        RestaurantPubRepository.generateAlternativeBookingHours(
           tBookTime,
           tRestaurantCeglanaSzczecin
         )
@@ -33,7 +31,7 @@ describe("RestaurantPubRepository", () => {
       //10:30 25 lis 2020 5 osób
       let tBookTime = new BookTime(30, 10, 25, 11, 2020, 5);
       expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
+        RestaurantPubRepository.generateAlternativeBookingHours(
           tBookTime,
           tRestaurantCeglanaSzczecin
         )
@@ -44,23 +42,11 @@ describe("RestaurantPubRepository", () => {
       //20:30 25 lis 2020 5 osób
       let tBookTime = new BookTime(30, 20, 25, 11, 2020, 5);
       expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
+        RestaurantPubRepository.generateAlternativeBookingHours(
           tBookTime,
           tRestaurantCeglanaSzczecin
         )
       ).toEqual(tAlternativeBookTimeArrayWith2Zeros);
-    });
-
-    test("should return array of 2 nulls and 4 BookTime , when reservation is fine, but first two don't have enough chairs.", () => {
-      //15:30 26 lis 2020 25 osób
-      let tBookTime = new BookTime(30, 15, 26, 11, 2020, 25);
-      tRestaurantCeglanaSzczecin.bookTimeArray = tBookTimeArray;
-      expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
-          tBookTime,
-          tRestaurantCeglanaSzczecin
-        )
-      ).toEqual(tAlternativeBookTimeArrayWith2NullFront);
     });
 
     test("should return an empty array the reservation is on sunday and the restaurant is closed", () => {
@@ -68,7 +54,7 @@ describe("RestaurantPubRepository", () => {
       let tBookTime = new BookTime(30, 15, 8, 11, 2020, 25);
       tRestaurantCeglanaSzczecin.bookTimeArray = tBookTimeArray;
       expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
+        RestaurantPubRepository.generateAlternativeBookingHours(
           tBookTime,
           tRestaurantCeglanaSzczecin
         )
@@ -80,34 +66,11 @@ describe("RestaurantPubRepository", () => {
       let tBookTime = new BookTime(30, 22, 9, 11, 2020, 25);
       tRestaurantCeglanaSzczecin.bookTimeArray = tBookTimeArray;
       expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
+        RestaurantPubRepository.generateAlternativeBookingHours(
           tBookTime,
           tRestaurantCeglanaSzczecin
         )
       ).toEqual([]);
-    });
-
-
-    test("should return 0, when all of the reservations are booked(bookTime amount of people is over)", () => {
-      let tBookTime = new BookTime(30, 15, 26, 11, 2020, 40);
-      tRestaurantCeglanaSzczecin.bookTimeArray = tBookTimeArray;
-      expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
-          tBookTime,
-          tRestaurantCeglanaSzczecin
-        )
-      ).toEqual(0);
-    });
-
-    test("should return 0, when all of the reservations are booked", () => {
-      let tBookTime = new BookTime(30, 18, 21, 10, 2020, 15);
-      tRestaurantCeglanaSzczecin.bookTimeArray = tFullBookedArray;
-      expect(
-        tRestaurantPubRepository.generateAlternativeBookingHours(
-          tBookTime,
-          tRestaurantCeglanaSzczecin
-        )
-      ).toEqual(0);
     });
   });
 });

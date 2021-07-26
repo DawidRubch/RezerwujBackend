@@ -1,34 +1,27 @@
 import { MessageError } from "nexmo";
+import { generateRoPMessageText } from "../../../core/helpers/generateRoPMessageText";
+import { generatingClientResponseText } from "../../../core/helpers/generatingClientResponseText";
 import PhoneNumberValidation from "../../../core/helpers/phoneNumberValidation";
+import { CONTACT_NAME } from "../../../core/ImportantVariables/CONTACT_INFO";
 import { BookTime } from "../../../data/models";
 import SMS from "../../../data/superclasses/Sms";
 
-export default class SmsSendRepository extends SMS {
+class SmsSendRepository extends SMS {
   sendSmsToRestaurantManager(
-    { people, hour, minute, day, month }: BookTime,
+    bookTime: BookTime,
     RoPNumber: string,
     clientNumber: string,
     additionalInfo?: string
   ) {
-    console.log(RoPNumber, clientNumber, additionalInfo);
     try {
-      //Contact Name
-      const from = "Rezerwuj";
-
-      const date = `${day}.${month < 10 ? "0" + month : month}`;
-
-      const time = `${hour}:${minute === 0 ? "00" : "30"}`;
-
-      const ENDPOINT_ADDRESS = `${
-        process.env.SERVER_ADDRESS
-      }/confirm-reservation?date=${date}&time=${time}&people=${people}&clientNumber=${clientNumber}${
-        additionalInfo ? "&additionalInfo=" + additionalInfo : ""
-      }`;
-
-      const textInSMS = `${ENDPOINT_ADDRESS}`;
+      const textInSMS = generateRoPMessageText(
+        bookTime,
+        clientNumber,
+        additionalInfo
+      );
 
       if (PhoneNumberValidation.checkIfNumberIsLegit(clientNumber as string)) {
-        this.sendSMS(textInSMS, RoPNumber, from);
+        this.sendSMS(textInSMS, RoPNumber, CONTACT_NAME);
         return "Sms sent to the restaurant owner";
       }
       return "Wrong number, sms was not sent";
@@ -44,11 +37,6 @@ export default class SmsSendRepository extends SMS {
     didRestaurantAgreed: boolean,
     clientPhoneNumber: string
   ) => {
-    const reservationInfoText = `Twoja rezerwacja na ${time},data ${date} dla ${people}.`;
-    const confirmResponseText = `${reservationInfoText}Została potwierdzona! Bardzo dziękujemy za korzystanie z naszego portalu!`;
-
-    const declineResponseText = `${reservationInfoText} Niestety została odrzucona.`;
-
     const isPhoneNumberLegit =
       PhoneNumberValidation.checkIfNumberIsLegit(clientPhoneNumber);
 
@@ -56,19 +44,20 @@ export default class SmsSendRepository extends SMS {
       const phoneNumberWithPolishAreaCode =
         PhoneNumberValidation.addPolishAreaCodeToNumber(clientPhoneNumber);
 
-      this.sendSMS(
-        didRestaurantAgreed ? confirmResponseText : declineResponseText,
-        phoneNumberWithPolishAreaCode,
-        "REZERWUJ"
+      const responseText = generatingClientResponseText(
+        didRestaurantAgreed,
+        date,
+        time,
+        people
       );
+
+      this.sendSMS(responseText, phoneNumberWithPolishAreaCode, CONTACT_NAME);
     }
   };
 
   sendSMS = (text: string, to: string, from: string) => {
     //Callback executed when SMS is sent
     const sendSMSCallBack = (err: MessageError, responseData: any) => {
-      //TODO
-      //Delete all logs here on prod
       if (err) {
         console.log(err);
       } else {
@@ -85,3 +74,5 @@ export default class SmsSendRepository extends SMS {
     this.nexmo.message.sendSms(from, to, text, this.opts, sendSMSCallBack);
   };
 }
+
+export default new SmsSendRepository();

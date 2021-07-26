@@ -2,19 +2,22 @@ import db from "../../core/DbConfig/firebase";
 import admin from "firebase-admin";
 import { BookTime, RestaurantOrPub } from "../models";
 
-import { mappingDataFromDb } from "../../core/helpers/mappingDataFromDb";
-import { RoPFromFirebase } from "../../core/Interfaces/RoPFromFirebase";
-import { EnviromentType } from "../../core/Types/EnviromentType";
-import { FirebaseCollectionNames } from "../../core/Enums/FirebaseCollectionNames";
+import { mappingDataFromDbToRoP } from "../../core/helpers/mappingDataFromDb";
+import {
+  EnviromentType,
+  FirebaseCollectionNames,
+  ReservationJson,
+  RoPFromFirebase,
+} from "../../core/TypeScript";
 
 /**
  Class with diffrent functions to map the data from the database.
  */
-export class RestaurantPubDb {
+class RestaurantPubDb {
   //Collection name in firestore database
 
   async getAllDocuments(
-    enviromentType: EnviromentType
+    enviromentType?: EnviromentType
   ): Promise<RestaurantOrPub[]> {
     const restaurantOrPubArr: RestaurantOrPub[] = [];
 
@@ -26,51 +29,48 @@ export class RestaurantPubDb {
     const { docs } = await db.collection(collection).get();
 
     for (const doc of docs) {
-      mappingDataFromDb(doc.data() as RoPFromFirebase, restaurantOrPubArr);
+      restaurantOrPubArr.push(
+        mappingDataFromDbToRoP(doc.data() as RoPFromFirebase)
+      );
     }
     return restaurantOrPubArr;
   }
 
   async getRestaurantOrPubByNameFromDb(
     name: string,
-    enviromentType: EnviromentType
+    enviromentType?: EnviromentType
   ) {
     const collection =
       enviromentType == "prod"
         ? FirebaseCollectionNames.RESTAURANTS_PROD
         : FirebaseCollectionNames.RESTAURANTS_TEST;
 
-    const restaurantOrPubArr: any[] = [];
     const snapshot = await db.collection(collection).doc(name).get();
 
     const snapshotData = snapshot.data();
     if (!snapshotData) return 0;
 
-    const dataInArray: RestaurantOrPub[] = mappingDataFromDb(
-      snapshotData as RoPFromFirebase,
-      restaurantOrPubArr
-    );
-    const data: RestaurantOrPub = dataInArray[0];
-
-    return data;
+    return mappingDataFromDbToRoP(snapshotData as RoPFromFirebase);
   }
 
   async saveReservationToDB(
     bookTime: BookTime,
-    enviromentType: EnviromentType,
-    restaurantName: string,
-    res: any,
-    email?: string,
-    personName?: string,
-    surName?: string,
-    number?: string
+    {
+      enviromentType,
+      name,
+      email,
+      personName,
+      surName,
+      number,
+    }: ReservationJson,
+    res: any
   ) {
     await this.manageReservationsFromDb(
       bookTime,
-      enviromentType,
       admin.firestore.FieldValue.arrayUnion,
-      restaurantName,
+      name,
       res,
+      enviromentType,
       email,
       personName,
       surName,
@@ -78,28 +78,12 @@ export class RestaurantPubDb {
     );
   }
 
-  async deleteReservationFromDB(
-    bookTime: BookTime,
-    enviromentType: EnviromentType,
-    restaurantName: string,
-    res: any
-  ) {
-    await this.manageReservationsFromDb(
-      bookTime,
-      enviromentType,
-      admin.firestore.FieldValue.arrayRemove,
-      restaurantName,
-      res
-    );
-  }
-
   async manageReservationsFromDb(
     bookTime: BookTime,
-    enviromentType: EnviromentType,
     arrayAddOrRemove: (...elements: any) => FirebaseFirestore.FieldValue,
     restaurantName: string,
     res: any,
-
+    enviromentType?: EnviromentType,
     email?: string,
     personName?: string,
     surName?: string,
@@ -124,7 +108,6 @@ export class RestaurantPubDb {
           month: bookTime.month,
           people: bookTime.people,
           year: bookTime.year,
-          name: bookTime.name,
           email,
           personName,
           surName,
@@ -142,3 +125,5 @@ export class RestaurantPubDb {
     });
   }
 }
+
+export default new RestaurantPubDb();
