@@ -1,27 +1,25 @@
 import express from "express";
-import { GetRestaurantsJson } from "../../core/TypeScript";
-import { bookTimeFromJson, RestaurantOrPub } from "../../data/models/";
+import { EnviromentType, GetRestaurantsJson } from "../../core/TypeScript";
+import { RestaurantOrPub } from "../../data/models/";
 import RestaurantPubRepository from "../../domain/repository/Places/RestaurantPubRepository";
 
-const router = express.Router();
+const getRestaurantsArrayRouter = express.Router();
 
-router.post(
-  "/",
-  async ({ body: { bookTime, enviromentType } }: GetRestaurantsJson, res) => {
-    const bookTimeFromJs = bookTimeFromJson(bookTime);
+getRestaurantsArrayRouter.post("/", async (req, res) => {
+  const { bookTime } = req.body;
+  const { enviromentType } = req.headers;
 
-    try {
-      RestaurantPubRepository.generateArrayOfRestaurantsFromCertainCity(
-        bookTimeFromJs,
-        enviromentType
-      ).then((value: RestaurantOrPub[]) =>
-        sendStatusBasedOnResFromDb(value, res)
-      );
-    } catch (err) {
-      console.log(err);
-    }
+  try {
+    RestaurantPubRepository.generateArrayOfRestaurantsFromCertainCity(
+      bookTime,
+      enviromentType as EnviromentType
+    ).then((value: RestaurantOrPub[]) =>
+      sendStatusBasedOnResFromDb(value, res)
+    );
+  } catch (err) {
+    console.log(err);
   }
-);
+});
 
 const sendStatusBasedOnResFromDb = (value: RestaurantOrPub[], res: any) => {
   if (!value) {
@@ -31,4 +29,4 @@ const sendStatusBasedOnResFromDb = (value: RestaurantOrPub[], res: any) => {
   res.send(value);
 };
 
-export default router;
+export default getRestaurantsArrayRouter;

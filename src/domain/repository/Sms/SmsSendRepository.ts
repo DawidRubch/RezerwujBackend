@@ -3,12 +3,12 @@ import { generateRoPMessageText } from "../../../core/helpers/generateRoPMessage
 import { generatingClientResponseText } from "../../../core/helpers/generatingClientResponseText";
 import PhoneNumberValidation from "../../../core/helpers/phoneNumberValidation";
 import { CONTACT_NAME } from "../../../core/ImportantVariables/CONTACT_INFO";
-import { BookTime } from "../../../data/models";
+import { BookTime, Bt } from "../../../data/models";
 import SMS from "../../../data/superclasses/Sms";
 
 class SmsSendRepository extends SMS {
   sendSmsToRestaurantManager(
-    bookTime: BookTime,
+    bookTime: Bt,
     RoPNumber: string,
     clientNumber: string,
     additionalInfo?: string
@@ -70,7 +70,6 @@ class SmsSendRepository extends SMS {
         }
       }
     };
-console.log(process.env.NEXMO_API)
     this.nexmo.message.sendSms(from, to, text, this.opts, sendSMSCallBack);
   };
 }

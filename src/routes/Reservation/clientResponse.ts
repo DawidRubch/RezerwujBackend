@@ -1,13 +1,12 @@
 import express from "express";
 import SmsSendRepository from "../../domain/repository/Sms/SmsSendRepository";
 
-const router = express.Router();
+const clientResponseRouter = express.Router();
 
 const convertIsConfirmedToBoolean = (isConfirmed: any) =>
   isConfirmed.toString() === "true" ? true : false;
 
-router.get("/", (req) => {
-
+clientResponseRouter.get("/", (req) => {
   const { isConfirmed, date, time, people, clientNumber } = req.query;
   const isConfirmedBoolean = convertIsConfirmedToBoolean(isConfirmed);
 
@@ -19,4 +18,4 @@ router.get("/", (req) => {
     clientNumber as string
   );
 });
-export default router;
+export { clientResponseRouter };

@@ -3,10 +3,16 @@ name: Node.js CI
 on: [push]
 
 jobs:
-  build:
-  
+
+  deploy:
     runs-on: ubuntu-latest
-    
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - uses: actions/checkout@v2
+  build:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [10.x, 12.x]

@@ -1,19 +1,22 @@
-import { BookTime } from "../../data/models";
+import { Bt } from "../../data/models";
 import { generateDateFromDayAndMonth } from "../../utils/BookTime/generateDateFromDayAndMonth";
 import { generateTimeFromMinuteAndHour } from "../../utils/BookTime/generateTimeFromMinuteAndHour";
+import { getAttrsFromDateString } from "../../utils/getAttributesFromDatestring";
 import { APIURLS } from "../ImportantVariables/ENDPOINT_NAMES";
 
 /**
  * Generating text message to send, when someone adds the reservation
  */
 export const generateRoPMessageText = (
-  { minute, hour, day, month, people }: BookTime,
+  { date, people }: Bt,
   clientNumber: string,
   additionalInfo?: string
 ) => {
+  const { day, month, hour, minutes } = getAttrsFromDateString(date);
+
   const DATE = generateDateFromDayAndMonth(day, month);
 
-  const TIME = generateTimeFromMinuteAndHour(hour, minute);
+  const TIME = generateTimeFromMinuteAndHour(hour, minutes);
 
   const dateQuery = `date=${DATE}`;
   const timeQuery = `&time=${TIME}`;

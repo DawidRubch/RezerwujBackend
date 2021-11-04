@@ -4,34 +4,22 @@ import RestaurantPubRepository from "../../domain/repository/Places/RestaurantPu
 import express from "express";
 import { getRoP } from "../../services/RoP/getRoP";
 import { EnviromentType } from "../../core/TypeScript";
-const router = express.Router();
+const getRopRouter = express.Router();
 
-interface GetRoPAlternativeBookingHoursReq {
-  body: {
-    bookTime: BookTime;
-    name: string;
-    enviromentType: EnviromentType;
-  };
-}
+getRopRouter.post("/", async (req, res) => {
+  const { enviromentType } = req.headers;
 
-router.post(
-  "/",
-  async (
-    {
-      body: { bookTime, name, enviromentType },
-    }: GetRoPAlternativeBookingHoursReq,
-    res
-  ) => {
-    //Getting restaurant or pub from array
-    const RoP = await getRoP(name, res, enviromentType);
+  const { name, bookTime } = req.body;
 
-    if (RoP === null) return;
+  //Getting restaurant or pub from array
+  const RoP = await getRoP(name, res, enviromentType as EnviromentType);
 
-    const alternativeBookingHours =
-      RestaurantPubRepository.generateAlternativeBookingHours(bookTime, RoP);
+  if (RoP === null) return;
 
-    res.send(alternativeBookingHours);
-  }
-);
+  const alternativeBookingHours =
+    RestaurantPubRepository.generateAlternativeBookingHours(bookTime, RoP);
 
-export default router;
+  res.send(alternativeBookingHours);
+});
+
+export { getRopRouter };

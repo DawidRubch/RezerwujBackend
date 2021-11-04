@@ -1,8 +1,8 @@
 import express from "express";
-const router = express.Router();
+const afterClickRouter = express.Router();
 
-router.get("/", (_, res) => {
+afterClickRouter.get("/", (_, res) => {
   res.render("AfterClick");
 });
 
-export default router;
+export { afterClickRouter };

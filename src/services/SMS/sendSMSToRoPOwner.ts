@@ -1,6 +1,6 @@
 import { ReservationJson } from "../../core/TypeScript";
 import OwnerNumbersDb from "../../data/database/OwnerNumbersDb";
-import { BookTime } from "../../data/models";
+import { BookTime, Bt } from "../../data/models";
 import SmsSendRepository from "../../domain/repository/Sms/SmsSendRepository";
 
 /**
@@ -10,7 +10,7 @@ import SmsSendRepository from "../../domain/repository/Sms/SmsSendRepository";
  *
  */
 export const sendSMSToRoPOwner = async (
-  bookTime: BookTime,
+  bookTime: Bt,
   { name, additionalInfo, number }: ReservationJson
 ) => {
   //RoP owner number

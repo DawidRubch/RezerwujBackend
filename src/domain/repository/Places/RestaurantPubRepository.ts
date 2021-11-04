@@ -2,14 +2,17 @@ import {
   BookTime,
   RestaurantOrPub,
   DayOfTheWeekOpenHours,
+  Bt,
 } from "../../../data/models";
 
 import RestaurantPubDb from "../../../data/database/RestaurantPubDataBase";
 import { EnviromentType } from "../../../core/TypeScript";
+import { getAttrsFromDateString } from "../../../utils/getAttributesFromDatestring";
 
+//@todo Refactor this ass
 class RestaurantPubRepository {
   generateArrayOfRestaurantsFromCertainCity = async (
-    bookTime: BookTime,
+    bookTime: Bt,
     enviromentType?: EnviromentType
   ) => {
     //Array of places taken from DB
@@ -23,6 +26,7 @@ class RestaurantPubRepository {
         bookTime,
         restaurantOrPub
       );
+
       restaurantOrPub.alternativeBookingHours = alternativeBookingHoursOr0;
     }
 
@@ -34,24 +38,22 @@ class RestaurantPubRepository {
    *Every BookTime is added 30 minutes.
    */
   generateAlternativeBookingHours(
-    bookTime: BookTime,
+    bookTime: Bt,
     restaurantOrPub: RestaurantOrPub
-  ): Array<null | BookTime | 0> | 0 {
-    const alternativeBookingHoursArray: Array<null | BookTime | 0> = [];
-    const restaurantBookTime: BookTime = new BookTime(
-      bookTime.minute,
-      bookTime.hour,
-      bookTime.day,
-      bookTime.month,
-      bookTime.year,
-      bookTime.people
-    );
+  ): Array<null | Bt | 0> | 0 {
+    const alternativeBookingHoursArray: Array<null | Bt | 0> = [];
+
+    const {
+      minutes: minute,
+      year,
+      month,
+      day,
+      hour: hours,
+      dateString,
+    } = getAttrsFromDateString(bookTime.date);
+
     //Creating the date object
-    const d: Date = new Date(
-      restaurantBookTime.year,
-      restaurantBookTime.month - 1,
-      restaurantBookTime.day
-    );
+    const d: Date = new Date(+year, +month, +day);
     //Checking which day of the week it is
     const dayOfTheWeek: number = d.getDay();
 
@@ -62,12 +64,29 @@ class RestaurantPubRepository {
     if (dayOpeningHours === null) {
       return [];
     }
+
+    let minutes = minute;
+    let hour = +hours;
+
     for (let i = 0; i < 6; i++) {
-      checkIfBookTimeViable(
-        alternativeBookingHoursArray,
-        restaurantBookTime,
-        dayOpeningHours
+      if (minutes === 60) {
+        hour += 1;
+        minutes = 0;
+      }
+
+      let bt = BookTime(
+        `${dateString}T${hour}:${!minutes ? "00" : 30}`,
+        bookTime.people
       );
+      const isBookTimeViable = checkIfBookTimeViable(bt, dayOpeningHours);
+
+      if (isBookTimeViable) {
+        alternativeBookingHoursArray.push(bt);
+      } else {
+        alternativeBookingHoursArray.push(0);
+      }
+
+      minutes += 30;
     }
 
     //Checks if there is something in array that isnt null
@@ -91,40 +110,21 @@ class RestaurantPubRepository {
 //It checks for bookTime being free and if it is free it pushes the bookTime to array
 //Else it pushes null
 function checkIfBookTimeViable(
-  alternativeBookingHoursArray: Array<null | BookTime | 0>,
-  restaurantBookTime: BookTime,
+  { hour: hours, minute: minutes }: Bt,
   { closingHour, openHour, closingMinute }: DayOfTheWeekOpenHours
 ) {
-  //If minutes are equal to 60 changes to next hour
-  if (restaurantBookTime.minute === 60) {
-    restaurantBookTime.hour += 1;
-    restaurantBookTime.minute = 0;
-  }
+  let hour = hours;
+  let minute = minutes;
+
   //Checks if the place is closed
-  if (
-    restaurantBookTime.hour > closingHour ||
-    restaurantBookTime.hour < openHour
-  ) {
-    alternativeBookingHoursArray.push(0);
+  if (hour > closingHour || hour < openHour) {
+    return false;
   } //Also checks for if the place is closed but in the same hour
-  else if (
-    restaurantBookTime.hour === closingHour &&
-    restaurantBookTime.minute > closingMinute
-  ) {
-    alternativeBookingHoursArray.push(0);
-  } else {
-    alternativeBookingHoursArray.push(
-      new BookTime(
-        restaurantBookTime.minute,
-        restaurantBookTime.hour,
-        restaurantBookTime.day,
-        restaurantBookTime.month,
-        restaurantBookTime.year,
-        restaurantBookTime.people
-      )
-    );
+  if (hour === closingHour && minute > closingMinute) {
+    return false;
   }
-  restaurantBookTime.minute += 30;
+
+  return true;
 }
 
 export default new RestaurantPubRepository();

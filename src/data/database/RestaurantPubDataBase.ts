@@ -1,6 +1,6 @@
 import db from "../../core/DbConfig/firebase";
 import admin from "firebase-admin";
-import { BookTime, RestaurantOrPub } from "../models";
+import { BookTime, Bt, RestaurantOrPub } from "../models";
 
 import { mappingDataFromDbToRoP } from "../../core/helpers/mappingDataFromDb";
 import {
@@ -54,7 +54,7 @@ class RestaurantPubDb {
   }
 
   async saveReservationToDB(
-    bookTime: BookTime,
+    bookTime: Bt,
     {
       enviromentType,
       name,
@@ -79,7 +79,7 @@ class RestaurantPubDb {
   }
 
   async manageReservationsFromDb(
-    bookTime: BookTime,
+    bookTime: Bt,
     arrayAddOrRemove: (...elements: any) => FirebaseFirestore.FieldValue,
     restaurantName: string,
     res: any,

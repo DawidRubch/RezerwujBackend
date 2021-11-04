@@ -2,9 +2,9 @@ import express from "express";
 import { verifyDateFormat } from "../../core/Verify/verifyDateFormat";
 import { verifyTimeFormat } from "../../core/Verify/verifyTimeFormat";
 
-const router = express.Router();
+const confirmReservationRouter = express.Router();
 
-router.get("/", (req, res) => {
+confirmReservationRouter.get("/", (req, res) => {
   const { date, time, people, clientNumber, additionalInfo } = req.query;
 
   const isDateCorrectFormat = verifyDateFormat(date as string);
@@ -27,4 +27,4 @@ router.get("/", (req, res) => {
   });
 });
 
-export default router;
+export { confirmReservationRouter };

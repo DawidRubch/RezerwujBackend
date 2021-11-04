@@ -1,3 +1,4 @@
+import { Bt } from ".";
 import { BookTime } from "./BookTime";
 import { DayOfTheWeekOpenHours } from "./DayOfTheWeek";
 
@@ -11,11 +12,11 @@ export class RestaurantOrPub {
   ownerNumber: string;
   chairs: number;
   menuLink: string;
-  bookTimeArray: BookTime[];
+  bookTimeArray: Bt[];
   image: string;
   descriptionPageImg: string;
   weekArray: Array<DayOfTheWeekOpenHours | null>;
-  alternativeBookingHours: Array<BookTime | null | 0> | 0;
+  alternativeBookingHours: Array<Bt | null | 0> | 0;
 
   constructor(
     name: string,
@@ -29,7 +30,7 @@ export class RestaurantOrPub {
     chairs: number,
     menuLink: string,
     //All of the reservations
-    bookTimeArray: BookTime[],
+    bookTimeArray: Bt[],
     //Url to the image
     image: string,
     descriptionPageImg: string,
@@ -73,7 +74,7 @@ export function fromJson({
 }: RestaurantOrPub): RestaurantOrPub {
   const weekArrayToReturn: Array<DayOfTheWeekOpenHours | null> =
     weekArray.map(mapWeekDay);
-  const bookTimeArrayToReturn: BookTime[] = bookTimeArray.map(mapBookTime);
+
   const restaurantOrPubEntity = new RestaurantOrPub(
     name,
     type,
@@ -83,7 +84,7 @@ export function fromJson({
     ownerNumber,
     chairs,
     menuLink,
-    bookTimeArrayToReturn,
+    bookTimeArray,
     image,
     descriptionPageImg,
     weekArrayToReturn
@@ -101,18 +102,6 @@ export function fromJson({
 
   return restaurantOrPubEntity;
 }
-function mapBookTime({ minute, hour, day, month, year, people }: BookTime) {
-  const restaurantBookTime = new BookTime(
-    minute,
-    hour,
-    day,
-    month,
-    year,
-    people
-  );
-
-  return restaurantBookTime;
-}
 
 function mapWeekDay(weekDay: DayOfTheWeekOpenHours | null) {
   if (weekDay === null) {
@@ -129,7 +118,7 @@ function mapWeekDay(weekDay: DayOfTheWeekOpenHours | null) {
   );
 }
 
-function mapAlternativeBookingHours(bookTimeOrNull: BookTime | null | 0) {
+function mapAlternativeBookingHours(bookTimeOrNull: Bt | null | 0) {
   if (bookTimeOrNull === null) {
     return null;
   }
@@ -137,8 +126,5 @@ function mapAlternativeBookingHours(bookTimeOrNull: BookTime | null | 0) {
     return 0;
   }
 
-  //Descructing bookTime object
-  const { minute, hour, day, month, year, people } = bookTimeOrNull;
-
-  return new BookTime(minute, hour, day, month, year, people);
+  return bookTimeOrNull;
 }

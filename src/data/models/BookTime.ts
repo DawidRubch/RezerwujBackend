@@ -1,46 +1,20 @@
-import { BookTimeJson } from "../../core/TypeScript";
+import { getAttrsFromDateString } from "../../utils/getAttributesFromDatestring";
 
-export class BookTime {
-  minute: number;
-  hour: number;
-  year: number;
-  day: number;
-  month: number;
-  people: number;
+export type Bt = ReturnType<typeof BookTime>;
 
-  constructor(
-    minute: number,
-    hour: number,
-    day: number,
-    month: number,
-    year: number,
-    people: number
-  ) {
-    this.minute = minute;
-    this.hour = hour;
-    this.day = day;
-    this.month = month;
-    this.year = year;
-    this.people = people;
-  }
-  toJson() {
+export const BookTime = (date: string, people: number) => {
+  const { dateString, hour, minutes, month, day, hourString, year } =
+    getAttrsFromDateString(date);
+  
     return {
-      minute: this.minute,
-      hour: this.hour,
-      year: this.year,
-      day: this.day,
-      month: this.month,
-      people: this.people,
-    };
-  }
-}
-
-
-export const bookTimeFromJson = ({
-  minute,
-  hour,
-  year,
-  day,
-  month,
-  people,
-}: BookTimeJson) => new BookTime(minute, hour, day, month, year, people);
+    date,
+    people,
+    hour: +hour,
+    minute: +minutes,
+    year: +year,
+    month: +month,
+    day: +day,
+    dateString,
+    hourString,
+  };
+};

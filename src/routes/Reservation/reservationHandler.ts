@@ -1,12 +1,13 @@
 import RestaurantPubDb from "../../data/database/RestaurantPubDataBase";
-import { BookTime, bookTimeFromJson } from "../../data/models";
+import { Bt } from "../../data/models";
 import { APIURLS } from "../../core/ImportantVariables/ENDPOINT_NAMES";
 import express from "express";
 import { sendSMSToRoPOwner } from "../../services/SMS/sendSMSToRoPOwner";
-import { BookTimeJson, ReservationJson } from "../../core/TypeScript";
-const router = express.Router();
+import { ReservationJson } from "../../core/TypeScript";
+import { getAttrsFromDateString } from "../../utils/getAttributesFromDatestring";
+const reservationHandlerRouter = express.Router();
 
-router.post(APIURLS.reservation.save, async (req, res) => {
+reservationHandlerRouter.post(APIURLS.reservation.save, async (req, res) => {
   //If there is no request, sends 400 error
   if (!req) {
     res.sendStatus(400);
@@ -15,9 +16,7 @@ router.post(APIURLS.reservation.save, async (req, res) => {
 
   const reqBody: ReservationJson = req.body;
   try {
-    const bookTimeReq: BookTimeJson = reqBody.bookTime;
-
-    const bookTime: BookTime = bookTimeFromJson(bookTimeReq);
+    const bookTime: Bt = reqBody.bookTime;
 
     const checkIfDateIsBeforeCurrentDate = isReservationFromPast(bookTime);
 
@@ -35,17 +34,11 @@ router.post(APIURLS.reservation.save, async (req, res) => {
 });
 
 //Checks if reservation is created before
-const isReservationFromPast = (bookTime: BookTime) => {
+const isReservationFromPast = ({ year, month, day }: Bt) => {
   const currentDate = new Date();
 
-  const dateFromBookTime = new Date();
-
-  dateFromBookTime.setDate(bookTime.day);
-  dateFromBookTime.setMonth(bookTime.month);
-  dateFromBookTime.setMinutes(bookTime.minute);
-  dateFromBookTime.setHours(bookTime.hour);
-  dateFromBookTime.setFullYear(bookTime.year);
+  const dateFromBookTime = new Date(year, month, day);
 
   return currentDate > dateFromBookTime;
 };
-export default router;
+export { reservationHandlerRouter };
