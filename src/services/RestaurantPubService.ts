@@ -2,14 +2,20 @@ import db from "../config/firebase";
 import { RestaurantOrPub } from "../data/models";
 import { EnviromentType, FirebaseCollectionNames } from "../core/TypeScript";
 
+//! If this is set to true,  on the rezerwuj.co domain, the restaurants will be fetched from the test collection
+const DISPLAY_TEST_DATA_ON_PROD = true;
+
 //Takes enviroment type and returns the collection name
 const getCollectionName = (
   city?: string,
   enviroment?: EnviromentType
-): string =>
-  enviroment === "prod" && city
+): string => {
+  if (DISPLAY_TEST_DATA_ON_PROD)
+    return FirebaseCollectionNames.RESTAURANTS_TEST;
+  return enviroment === "prod" && city
     ? city
     : FirebaseCollectionNames.RESTAURANTS_TEST;
+};
 
 //Takes all available restaurants
 interface IgetAllDocuments {
