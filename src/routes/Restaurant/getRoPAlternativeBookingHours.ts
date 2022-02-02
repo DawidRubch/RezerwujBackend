@@ -1,25 +1,33 @@
-import { BookTime } from "../../data/models";
-import RestaurantPubRepository from "../../domain/repository/Places/RestaurantPubRepository";
-
+import { generateAlternativeBookingHours } from "../../middleware/RestaurantMiddleware";
 import express from "express";
-import { getRoP } from "../../services/RoP/getRoP";
 import { EnviromentType } from "../../core/TypeScript";
+import { getRoP } from "../../services/RestaurantPubService";
+
 const getRopRouter = express.Router();
 
 getRopRouter.post("/", async (req, res) => {
   const { enviromentType } = req.headers;
 
+  //TODO: convert name to be a parameter in path
   const { name, bookTime } = req.body;
 
   //Getting restaurant or pub from array
-  const RoP = await getRoP(name, res, enviromentType as EnviromentType);
+  const restaurantOrPub = await getRoP(
+    name,
+    res,
+    enviromentType as EnviromentType
+  );
 
-  if (RoP === null) return;
+  if (restaurantOrPub === null) {
+    res.sendStatus(404);
+  } else {
+    const alternativeBookingHours = generateAlternativeBookingHours({
+      bookTime,
+      restaurantOrPub,
+    });
 
-  const alternativeBookingHours =
-    RestaurantPubRepository.generateAlternativeBookingHours(bookTime, RoP);
-
-  res.send(alternativeBookingHours);
+    res.send(alternativeBookingHours);
+  }
 });
 
 export { getRopRouter };

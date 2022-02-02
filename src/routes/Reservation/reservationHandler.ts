@@ -1,10 +1,8 @@
-import RestaurantPubDb from "../../data/database/RestaurantPubDataBase";
 import { Bt } from "../../data/models";
 import { APIURLS } from "../../core/ImportantVariables/ENDPOINT_NAMES";
 import express from "express";
-import { sendSMSToRoPOwner } from "../../services/SMS/sendSMSToRoPOwner";
 import { ReservationJson } from "../../core/TypeScript";
-import { getAttrsFromDateString } from "../../utils/getAttributesFromDatestring";
+import { sendSMSToRoPOwner } from "../../services/NumbersService";
 const reservationHandlerRouter = express.Router();
 
 reservationHandlerRouter.post(APIURLS.reservation.save, async (req, res) => {
@@ -25,9 +23,9 @@ reservationHandlerRouter.post(APIURLS.reservation.save, async (req, res) => {
       return;
     }
 
-    await sendSMSToRoPOwner(bookTime, reqBody);
+    res.send(200)
 
-    RestaurantPubDb.saveReservationToDB(bookTime, reqBody, res);
+    await sendSMSToRoPOwner(bookTime, reqBody);
   } catch (err) {
     console.log(err);
   }

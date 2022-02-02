@@ -1,4 +1,3 @@
-//API
 export const APIURLS = {
   serverAddress: process.env.serverURL || "http://localhost:5000",
   reservation: {
@@ -6,6 +5,7 @@ export const APIURLS = {
     save: "/save",
   },
   getRestaurants: "/getRestaurants",
+  getRestaurantsLanding: "/getRestaurantsLanding",
   getRoPAlternativeBookingHours: "/getRoPAlternativeBookingHours",
   confirmReservation: "/confirm-reservation",
   clientResponse: "/client-response",

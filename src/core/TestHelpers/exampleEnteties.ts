@@ -3,7 +3,7 @@ import {
   DayOfTheWeekOpenHours,
   RestaurantOrPub,
 } from "../../data/models/";
-import RestaurantPubRepository from "../../domain/repository/Places/RestaurantPubRepository";
+import RestaurantPubRepository from "../../middleware/RestaurantMiddleware";
 const weekArray = [
   null,
   new DayOfTheWeekOpenHours(10, 0, 22, 0),

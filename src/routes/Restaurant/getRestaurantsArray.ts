@@ -1,19 +1,21 @@
 import express from "express";
 import { EnviromentType, GetRestaurantsJson } from "../../core/TypeScript";
 import { RestaurantOrPub } from "../../data/models/";
-import RestaurantPubRepository from "../../domain/repository/Places/RestaurantPubRepository";
+import { generateArrayOfRestaurants } from "../../middleware/RestaurantMiddleware";
 
 const getRestaurantsArrayRouter = express.Router();
 
 getRestaurantsArrayRouter.post("/", async (req, res) => {
   const { bookTime } = req.body;
-  const { enviromentType } = req.headers;
+  const { enviroment, city } = req.headers;
+
 
   try {
-    RestaurantPubRepository.generateArrayOfRestaurantsFromCertainCity(
+    generateArrayOfRestaurants({
       bookTime,
-      enviromentType as EnviromentType
-    ).then((value: RestaurantOrPub[]) =>
+      enviroment: enviroment as EnviromentType,
+      city: city as string,
+    }).then((value: RestaurantOrPub[]) =>
       sendStatusBasedOnResFromDb(value, res)
     );
   } catch (err) {

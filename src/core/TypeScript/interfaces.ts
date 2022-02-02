@@ -1,5 +1,6 @@
+import { DayOfTheWeekOpenHours } from "types";
 import { EnviromentType } from ".";
-import { Bt, DayOfTheWeekOpenHours } from "../../data/models";
+import { Bt } from "../../data/models";
 
 export interface GetRestaurantsJson {
   body: {

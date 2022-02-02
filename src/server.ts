@@ -1,7 +1,6 @@
 //External variables/modules imports
-import { APIURLS } from "./core/ImportantVariables/ENDPOINT_NAMES";
 import express from "express";
-import router from "./routes/router";
+import { router } from "./routes";
 require("dotenv").config();
 const cors = require("cors");
 

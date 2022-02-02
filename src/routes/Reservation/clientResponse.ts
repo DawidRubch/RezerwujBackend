@@ -1,21 +1,21 @@
 import express from "express";
-import SmsSendRepository from "../../domain/repository/Sms/SmsSendRepository";
+import { sendRespondToClient } from "../../middleware/SmsMiddleware";
 
 const clientResponseRouter = express.Router();
 
 const convertIsConfirmedToBoolean = (isConfirmed: any) =>
-  isConfirmed.toString() === "true" ? true : false;
+  isConfirmed.toString() === "true";
 
 clientResponseRouter.get("/", (req) => {
   const { isConfirmed, date, time, people, clientNumber } = req.query;
   const isConfirmedBoolean = convertIsConfirmedToBoolean(isConfirmed);
 
-  SmsSendRepository.sendRespondToClient(
-    date as string,
-    time as string,
-    people as string,
-    isConfirmedBoolean,
-    clientNumber as string
-  );
+  sendRespondToClient({
+    date: date as string,
+    time: time as string,
+    people: people as string,
+    clientNumber: clientNumber as string,
+    didRestaurantAgreed: isConfirmedBoolean,
+  });
 });
 export { clientResponseRouter };

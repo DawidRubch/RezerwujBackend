@@ -1,4 +1,4 @@
-import { monthNameshInPolish } from "../ImportantVariables/POLISH_MONTH_NAMES";
+import { monthNameshInPolish } from "../core/ImportantVariables/POLISH_MONTH_NAMES";
 
 /**
  * Function used to generate text sent back to the client, after the response from RoP owner
