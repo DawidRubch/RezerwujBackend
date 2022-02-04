@@ -46,14 +46,21 @@ const getFullRestauransArray = async (
   return res.send(fullRestaurantsArray);
 };
 
+//! This variable is used to not send city via headers, when there is only one city
+const IF_ONLY_SZCZECIN_IS_AVAILABLE = true;
+
 getRestaurantsArrayLandingRouter.post("/", async (req, res) => {
   const headers = req.headers;
   const { search } = req.query;
-  const { bookTime } = req.body;
+  const bookTime = req.body;
 
   const searchStr = search?.toString();
 
-  const { enviroment, city } = headers as Headers;
+  let { enviroment, city } = headers as Headers;
+
+  if (IF_ONLY_SZCZECIN_IS_AVAILABLE) {
+    city = "Szczecin";
+  }
 
   if (!city) {
     return res.sendStatus(400);
