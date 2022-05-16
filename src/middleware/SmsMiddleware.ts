@@ -3,10 +3,10 @@ import { generateRoPMessageText } from "../utils/generateRoPMessageText";
 import { generatingClientResponseText } from "../utils/generatingClientResponseText";
 import PhoneNumberValidation from "../utils/phoneNumberValidation";
 import { CONTACT_NAME } from "../core/ImportantVariables/CONTACT_INFO";
-import { Bt } from "../data/models";
+import { Bt as BookTime } from "../data/models";
 
 interface IsendSmsToRestaurantManager {
-  bookTime: Bt;
+  bookTime: BookTime;
   RoPNumber: string;
   clientNumber: string;
   additionalInfo?: string;

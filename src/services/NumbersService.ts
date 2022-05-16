@@ -37,7 +37,7 @@ export const sendSMSToRoPOwner = async (
   if (ownerNumber === null) {
     sendSms({
       text: "Sprawdz ownerNumber w firebase",
-      to: "48535480759",
+      to: "xxx",
       from: "Rezerwuj",
     });
     return;
@@ -45,10 +45,10 @@ export const sendSMSToRoPOwner = async (
 
   const encodedAdditionalInfo = additionalInfo ? encodeURI(additionalInfo) : "";
 
-  sendSmsToRestaurantManager({
-    bookTime,
-    RoPNumber: ownerNumber,
-    clientNumber: number,
-    additionalInfo: encodedAdditionalInfo,
-  });
+  // sendSmsToRestaurantManager({
+  //   bookTime,
+  //   RoPNumber: ownerNumber,
+  //   clientNumber: number,
+  //   additionalInfo: encodedAdditionalInfo,
+  // });
 };

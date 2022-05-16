@@ -1,17 +1,17 @@
 import { DayOfTheWeekOpenHours } from "types";
 import { EnviromentType } from ".";
-import { Bt } from "../../data/models";
+import { Bt as BookTime } from "../../data/models";
 
 export interface GetRestaurantsJson {
   body: {
     enviromentType?: EnviromentType;
-    bookTime: Bt;
+    bookTime: BookTime;
   };
 }
 
 export interface GetRestaurantInfoDescriptionInterface {
   body: {
-    bookTime: Bt;
+    bookTime: BookTime;
     name: string;
     enviromentType?: EnviromentType;
   };
@@ -22,7 +22,7 @@ export interface GetRestaurantInfoConfirmPageInterface {
 export interface ReservationJson {
   name: string;
   enviromentType?: EnviromentType;
-  bookTime: Bt;
+  bookTime: BookTime;
   number: string;
   email?: string;
   personName?: string;
@@ -41,7 +41,7 @@ export interface RoPFromFirebase {
   chairs: number;
   menuLink: string;
   ownerNumber: string;
-  bookTimeArray: Bt[];
+  bookTimeArray: BookTime[];
   image: string;
   descriptionPageImg: string;
   weekArray: Array<DayOfTheWeekOpenHours | null>;

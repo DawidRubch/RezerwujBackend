@@ -28,8 +28,6 @@ export const getAllDocumentsFromACollection = async ({
 }: IgetAllDocuments): Promise<RestaurantOrPub[]> => {
   const collectionName = getCollectionName(city, enviroment);
 
-  //TODO: change to ""return await db.collection(collectionName).listDocuments();""
-
   const { docs } = await db.collection(collectionName).get();
 
   return docs.map((doc) => doc.data() as RestaurantOrPub);
